@@ -25,7 +25,7 @@ class Clock:
         time.sleep(60/self.tempo.current_tempo)
 
 
-def main():
+def main(): # Main function
     tempo = Tempo(60) # Tempo initialization
     clock = Clock(tempo) # Clock initialization
 
@@ -33,11 +33,9 @@ def main():
         # Start of the tick tack sequence (10 times)
         clock.ticking()
 
-if __name__ == "__main__":
+if __name__ == "__main__": 
     main()
-
-
-
+    # lance cette fct si le fichier est lancé
 
 
 #led1 = gpiozero.LED(17)
