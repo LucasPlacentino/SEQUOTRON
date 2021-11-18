@@ -1,6 +1,9 @@
 # activer I2C
 # installer smbus
+#peut etre besoin de pigpio (en plus de gpiozero)
 # et
+
+# CODE PLUS BAS
 
 """
 #pip install rpi-lcd
@@ -93,8 +96,9 @@ class LCDSequencer: # must initiate in main file: lcd = LCDSequencer()
     """
         LCD Class
     """
-    def __init__(self):
+    def __init__(self, tempo):
         self.testvar = 0
+        self.tempo = tempo # besoin ?
 
     def displayTempo(self, tempo):
         self.justify('right')
@@ -109,7 +113,7 @@ class LCDSequencer: # must initiate in main file: lcd = LCDSequencer()
         self.justify('left')
         self.write(0, "Step " + step.toString())
         #self.write("Step $step")
-
+        
         self.displayNote(step.pitch, step.octave)
 
     def displayOutput(self, output):
