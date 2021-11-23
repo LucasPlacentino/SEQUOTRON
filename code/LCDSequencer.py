@@ -91,34 +91,58 @@ for i in range (0, len(my_long_string)):
  mylcd.lcd_display_string(padding[(15+i):i], 1)
 """
 
+from RPLCD.i2c import CharLCD
 
 class LCDSequencer: # must initiate in main file: lcd = LCDSequencer()
     """
         LCD Class
     """
-    def __init__(self, tempo):
-        self.testvar = 0
-        self.tempo = tempo # besoin ?
 
-    def displayTempo(self, tempo):
-        self.justify('right')
-        self.write(0, "Tempo:\n" + tempo.toString() +"BPM")
+    def __init__(self, tempo, pitch, octave, step, output):  # besoin arguments ?
+        self.testvar = 0
+
+        self.pitch = pitch    # besoin ?
+        self.tempo = tempo    # besoin ?
+        self.octave = octave  # besoin ?
+        self.step = step      # besoin ?
+        self.output = output  # besoin ?
+
+        lcd = CharLCD(i2c_expander='PCF8574', address=0x27, cols=16, rows=2, auto_linebreaks=True, backlight_enabled=True)
+        lcd.clear()
+
+    def displayTempo(self, tempo):  # besoin arguments ?
+        #self.justify('right')
+        #self.write(0, "Tempo:\n" + tempo.toString() +"BPM")
         #self.write(0, "Tempo: \n$tempoBPM")
 
-    def displayNote(self, pitch, octave):
-        self.justify('left')
-        self.write(1, pitch.toString() + octave.toString())
+        self.lcd.cursor_pos = (0, 8)
+        self.lcd.write_string("Tempo:")
+        self.lcd.cursor_pos = (1, 8)
+        self.lcd.write_string(tempo.toString() + "BPM")
 
-    def displayStep(self, step):
-        self.justify('left')
-        self.write(0, "Step " + step.toString())
+    def displayNote(self, pitch, octave): #besoin arguments ?
+        #self.justify('left')
+        #self.write(1, pitch.toString() + octave.toString())
+
+        self.lcd.cursor_pos = (1, 0)
+        self.lcd.write_string(pitch.toString() + octave.tiString())
+
+    def displayStep(self, step):  # besoin arguments ?
+        #self.justify('left')
+        #self.write(0, "Step " + step.toString())
         #self.write("Step $step")
-        
+
+        #blabla
         self.displayNote(step.pitch, step.octave)
 
-    def displayOutput(self, output):
-        self.justify('right')
-        self.write(0, "Output" + output.toString() + ":\n" + output.value.toString())
+    def displayOutput(self, output): #besoin arguments ?
+        #self.justify('right')
+        #self.write(0, "Output" + output.name.toString() + ":\n" + output.value.toString())
+
+        self.lcd.cursor_pos = (0, 8)
+        self.lcd.write_string(output.name.toString())
+        self.lcd.cursor_pos = (1, 8)
+        self.lcd.write_string(output.value.toString())
         
     def test(self):
-        print("test")
+        print("test" + self.testvar)
