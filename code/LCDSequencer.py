@@ -115,6 +115,7 @@ class LCDSequencer: # must initiate in main file: lcd = LCDSequencer()
         #self.write(0, "Tempo:\n" + tempo.toString() +"BPM")
         #self.write(0, "Tempo: \n$tempoBPM")
 
+        self.lcd.text_align_mode = "right" # Si fonctionne, changer cursor_pos à (0,0) ?
         self.lcd.cursor_pos = (0, 8)
         self.lcd.write_string("Tempo:")
         self.lcd.cursor_pos = (1, 8)
