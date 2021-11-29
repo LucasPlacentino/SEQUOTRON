@@ -134,6 +134,9 @@ class LCDSequencer: # must initiate in main file: lcd = LCDSequencer()
         #self.write("Step $step")
 
         #blabla
+        self.lcd.cursor_pos = (0, 0)
+        self.lcd.write_sting("Step " + step.nbstep)
+
         self.displayNote(step.pitch, step.octave)
 
     def displayOutput(self, output): #besoin arguments ?
