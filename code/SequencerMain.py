@@ -36,6 +36,7 @@ def main(): # Main function
     tempo = Tempo(60) # Tempo initialization
     clock = Clock(tempo) # Clock initialization
 
+    #lcd.toggleBacklight(True) # Turns the backlight ON
     lcd.displayTempo(tempo.current_tempo) # shows the current tempo
 
     for i in range(1,10):
@@ -48,6 +49,19 @@ def main(): # Main function
     for i in range(1,10):
         # Start of the tick tack sequence (10 times)
         clock.ticking()
+
+    lcd.toggleBacklight(False) # Turns the backlight OFF for the end of the program
+
+    ''' Test code on RPi
+    lcd.displayNote("A#",4)
+    lcd.displayTempo(100)
+    step7 = Step(7)
+    time.sleep(5)
+    lcd.displayStep(step7)
+    time.sleep(5)
+    lcd.clearLCD()
+    lcd.toggleBacklight(False)
+    '''
 
 if __name__ == "__main__": 
     main()

@@ -109,8 +109,9 @@ class LCDSequencer: # must initiate in main file: lcd = LCDSequencer()
         self.step = step      # besoin ?
         self.output = output  # besoin ?
         '''
-        self.lcd = CharLCD(i2c_expander='PCF8574', address=0x26, cols=16, rows=2, auto_linebreaks=True, backlight_enabled=True)
-        self.lcd.clear()
+        self.lcd = CharLCD(i2c_expander='PCF8574', address=0x26, cols=16, rows=2, auto_linebreaks=True, backlight_enabled=False)  # initiate the LCD from the RPLCD.i2c library with these parameters
+        self.lcd.clear() # Clears the LCD
+        self.lcd.backlight_enabled = True # Turns the backlight ON
 
     def displayTempo(self, tempo):
         #self.justify('right')
@@ -118,9 +119,11 @@ class LCDSequencer: # must initiate in main file: lcd = LCDSequencer()
         #self.write(0, "Tempo: \n$tempoBPM")
 
         #self.lcd.text_align_mode = "right" # Si fonctionne, changer cursor_pos à (0,0) ? c'est pas une justify à droite mais une écriture de droite à gauche (lettres inversées)
-        self.lcd.cursor_pos = (0, 8)
+        '''We should calculate the space left in the line and reposition the cursor like 16-length("Tempo:")
+        or (PREFERRED) add white spaces before the string and put cursor pos at something like 8 because it will clear any text left on the screen if the previous one was longer'''
+        self.lcd.cursor_pos = (0, 10)
         self.lcd.write_string("Tempo:")
-        self.lcd.cursor_pos = (1, 8)
+        self.lcd.cursor_pos = (1, 10)
         self.lcd.write_string(str(tempo) + "BPM")
 
     def displayNote(self, pitch, octave):
@@ -152,3 +155,9 @@ class LCDSequencer: # must initiate in main file: lcd = LCDSequencer()
         
     def test(self):
         print("test" + str(self.testvar))
+
+    def clearLCD(self):
+        self.lcd.clear()
+
+    def toggleBacklight(self, boolean):
+        self.lcd.backlight_enabled = boolean
