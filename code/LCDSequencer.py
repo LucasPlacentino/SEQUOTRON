@@ -97,56 +97,58 @@ class LCDSequencer: # must initiate in main file: lcd = LCDSequencer()
     """
         LCD Class
     """
+    #lcd = lcd = CharLCD(i2c_expander='PCF8574', address=0x26, cols=16, rows=2, auto_linebreaks=True, backlight_enabled=True)
 
-    def __init__(self, tempo, pitch, octave, step, output):  # besoin arguments ?
+    def __init__(self):
+        '''
         self.testvar = 0
-
+        
         self.pitch = pitch    # besoin ?
         self.tempo = tempo    # besoin ?
         self.octave = octave  # besoin ?
         self.step = step      # besoin ?
         self.output = output  # besoin ?
+        '''
+        self.lcd = CharLCD(i2c_expander='PCF8574', address=0x26, cols=16, rows=2, auto_linebreaks=True, backlight_enabled=True)
+        self.lcd.clear()
 
-        lcd = CharLCD(i2c_expander='PCF8574', address=0x27, cols=16, rows=2, auto_linebreaks=True, backlight_enabled=True)
-        lcd.clear()
-
-    def displayTempo(self, tempo):  # besoin arguments ?
+    def displayTempo(self, tempo):
         #self.justify('right')
         #self.write(0, "Tempo:\n" + tempo.toString() +"BPM")
         #self.write(0, "Tempo: \n$tempoBPM")
 
-        self.lcd.text_align_mode = "right" # Si fonctionne, changer cursor_pos à (0,0) ?
+        #self.lcd.text_align_mode = "right" # Si fonctionne, changer cursor_pos à (0,0) ? c'est pas une justify à droite mais une écriture de droite à gauche (lettres inversées)
         self.lcd.cursor_pos = (0, 8)
         self.lcd.write_string("Tempo:")
         self.lcd.cursor_pos = (1, 8)
-        self.lcd.write_string(tempo.toString() + "BPM")
+        self.lcd.write_string(str(tempo) + "BPM")
 
-    def displayNote(self, pitch, octave): #besoin arguments ?
+    def displayNote(self, pitch, octave):
         #self.justify('left')
         #self.write(1, pitch.toString() + octave.toString())
 
         self.lcd.cursor_pos = (1, 0)
-        self.lcd.write_string(pitch.toString() + octave.tiString())
+        self.lcd.write_string(str(pitch) + str(octave))
 
-    def displayStep(self, step):  # besoin arguments ?
+    def displayStep(self, step):
         #self.justify('left')
         #self.write(0, "Step " + step.toString())
         #self.write("Step $step")
 
         #blabla
         self.lcd.cursor_pos = (0, 0)
-        self.lcd.write_sting("Step " + step.nbstep)
+        self.lcd.write_sting("Step " + str(step.nbstep))
 
         self.displayNote(step.pitch, step.octave)
 
-    def displayOutput(self, output): #besoin arguments ?
+    def displayOutput(self, output):
         #self.justify('right')
         #self.write(0, "Output" + output.name.toString() + ":\n" + output.value.toString())
 
         self.lcd.cursor_pos = (0, 8)
-        self.lcd.write_string(output.name.toString())
+        self.lcd.write_string(str(output.name))
         self.lcd.cursor_pos = (1, 8)
-        self.lcd.write_string(output.value.toString())
+        self.lcd.write_string(str(output.value))
         
     def test(self):
-        print("test" + self.testvar)
+        print("test" + str(self.testvar))
