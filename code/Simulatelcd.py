@@ -8,11 +8,17 @@ class Simulatelcd:
         self.testvar = 0
     
     def displayTempo(self, tempo):
-        print("tempo:" + tempo)
+        print("tempo:" + str(tempo))
     
     def displayNote(self, pitch, octave):
-        print("pitch:" + pitch + " octave:" + octave)
+        print("pitch:" + str(pitch) + " octave:" + str(octave))
 
     def displayStep(self, step):
-        print("step:" + step.nbstep)
-        self.displayNote(step.picth, step.octave)
+        print("step:" + str(step.nbstep))
+        self.displayNote(str(step.picth), str(step.octave))
+    
+    def clearLCD(self):
+        print("clear LCD")
+
+    def toggleBacklight(self, boolean):
+        print("Backlight: " + str(boolean))

@@ -5,9 +5,9 @@ TRANH201INFO3 sequencer test code
 import gpiozero
 import time
 
-import Step #Step class
-import LCDSequencer #LCD class
-import Simulatelcd # simulated LCD class, for testing purposes
+from Step import Step #Step class
+#from LCDSequencer import LCDSequencer #LCD class
+from Simulatelcd import Simulatelcd # simulated LCD class, for testing purposes
 
 class Tempo:
     # Tempo
@@ -31,8 +31,8 @@ class Clock:
 
 
 def main(): # Main function
-    #lcdsimulated = Simulatelcd() # initialization of a simulated LCD, to use when running the program outside of a RPi, it will just print out rather than display on the LCD
-    lcd = LCDSequencer() # LCD initialization
+    lcd = Simulatelcd() # initialization of a simulated LCD, to use when running the program outside of a RPi, it will just print out rather than display on the LCD
+    #lcd = LCDSequencer.LCDSequencer() # LCD initialization
     tempo = Tempo(60) # Tempo initialization
     clock = Clock(tempo) # Clock initialization
 
