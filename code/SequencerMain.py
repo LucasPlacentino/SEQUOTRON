@@ -6,13 +6,16 @@ import gpiozero
 import time
 
 from Step import Step #Step class
-#from LCDSequencer import LCDSequencer #LCD class
+from LCDSequencer import LCDSequencer #LCD class
 from Simulatelcd import Simulatelcd #Simulated LCD class, for testing purposes and/or when not running on a RPi
 from DACSequencer import DACSequencer #DAC class
 from RotaryEncoder import RotaryEncoder #Rotary encoder class
 from ClockSequencer import ClockSequencer #Clock class
 from LEDSequence import LEDSequence #LEDs Sequence class (8 LEDs)
-
+from Sequencer import Sequencer
+from Tempo import Tempo
+from Gate import Gate
+'''
 class Tempo: # needs to be changed ?
     # Tempo
     def __init__(self, current_tempo):
@@ -32,9 +35,54 @@ class Clock: # needs to be changed
         print("tack")
         clock=1
         time.sleep(60/tempo.current_tempo)
+'''
 
 
-def main(): # Main function
+
+def main(): # Main function, activated when sequencer launched
+
+    sequencer = Sequencer
+    lcd = Simulatelcd()
+    #lcd = LCDSequencer()
+    lcd.toggleBacklight(True)
+
+    sequencer = Sequencer
+    tempo = Tempo(60, lcd) # initial tempo is 60 bpm
+    gate = Gate(sequencer.dac2, 0, lcd)
+
+    note = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"]
+    l_steps = []
+    for i in range(8): #création de la liste des notes
+        l_steps.append([1, 4]) #cette liste représente l'octave et la note
+
+    #sequencer.button1.when_pressed = ?.on
+    #sequencer.button2.when_pressed = ?.augmenter_pitch
+    #sequencer.button3.when_pressed = ?.diminuer_pitch
+
+    sequencer.rotorTempo.when_rotated_clockwise = sequencer.rotorTempo.increaseTempo
+    sequencer.rotorTempo.when_rotated_counter_clockwise = sequencer.rotorTempo.decreaseTempo
+    sequencer.rotorGate.when_rotated_clockwise = sequencer.rotorGate.increaseGate
+    sequencer.rotorGate.when_rotated_counter_clockwise = sequencer.rotorGate.decreaseGate
+    sequencer.rotorCV1.when_rotated_clockwise = sequencer.rotorCV1.increaseCV
+    sequencer.rotorCV1.when_rotated_counter_clockwise = sequencer.rotorCV1.decreaseCV
+    sequencer.rotorCV2.when_rotated_clockwise = sequencer.rotorCV2.increaseCV
+    sequencer.rotorCV2.when_rotated_counter_clockwise = sequencer.rotorCV2.decreaseCV
+    sequencer.rotorCV3.when_rotated_clockwise = sequencer.rotorCV3.increaseCV
+    sequencer.rotorCV3.when_rotated_counter_clockwise = sequencer.rotorCV3.decreaseCV
+
+    # sequence led, sequence gate send following tempo
+
+    # for testing :
+    for p in range (10): # does the step sequence 10 times
+        for i in range(0,7):
+            gate.sendGateSignal(tempo)
+            pitchDAC = 4096*(l_steps[i][1]/12) # need to add octaves
+            sequencer.dac1.setVoltage(0, pitchDAC)
+            time.sleep(60/tempo.value)
+    sequencer.dac1.setVoltage(0, 0)
+    lcd.toggleBacklight(False)
+
+    '''
     lcd = Simulatelcd() # initialization of a simulated LCD, to use when running the program outside of a RPi, it will just print out rather than display on the LCD
     #lcd = LCDSequencer.LCDSequencer() # LCD initialization
     tempo = Tempo(60) # Tempo initialization (default 60 bpm)
@@ -57,6 +105,9 @@ def main(): # Main function
         clock.ticking(tempo)
 
     lcd.toggleBacklight(False) # Turns the backlight OFF for the end of the program
+    '''
+
+
 
     ''' Test code on RPi
     lcd.displayNote("A#",4)
@@ -73,6 +124,4 @@ if __name__ == "__main__":
     main()
     # launch main() if this file is launched (SequencerMain.py)
 
-
-#led1 = gpiozero.LED(17)
 

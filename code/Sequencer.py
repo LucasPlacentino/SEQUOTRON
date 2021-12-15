@@ -1,8 +1,43 @@
+from DACSequencer import DACSequencer
 from gpiozero import *
 import time
 import spidev
 from signal import pause
 from MCP4922 import MCP4922
+from RotaryEncoder import RotaryEncoder
+from CV import CV
+
+
+class Sequencer:
+
+    MAX_STEP = 7
+    MIN_STEP = 0
+    MAX_TEMPO = 359
+    MIN_TEMPO = 2
+    MAX_OCTAVE = 2 # 4 when 5V, here only 2 because only 3.3V
+    MIN_OCTAVE = 0
+    MAX_PITCH = 12
+    MIN_PITCH = 1
+
+    def __init__(self):
+
+        self.button1 = Button(5) # physical pin 29
+        self.button2 = Button(6) # physical pin 31
+        self.button3 = Button(12) # physical pin 32
+
+        self.rotorTempo = RotaryEncoder(17, 27, "tempo") # physical pin 11 and 13
+        self.rotorGate = RotaryEncoder(4, 14, "gate/env") # physical pin 7 and 8
+        self.rotorCV1 = RotaryEncoder(15, 18, "cv", 1) # physical pin 10 and 12
+        self.rotorCV2 = RotaryEncoder(22, 23, "cv", 2) # physcial pin 15 and 16
+        self.rotorCV3 = RotaryEncoder(24, 25, "cv", 3) # physical pin 18 and 22
+
+        self.dac1 = DACSequencer(0, 0, 5) # could be a MCP4921, physical pin 29
+        self.dac2 = DACSequencer(0, 0, 7) # physical pin 26
+        self.dac3 = DACSequencer(0, 0, 8) # physical pin 24
+
+        self.cv1 = CV(self.dac2, 1)
+        self.cv2 = CV(self.dac3, 0)
+        self.cv3 = CV(self.dac3, 1)
 
 
 button1 = Button(5) #29

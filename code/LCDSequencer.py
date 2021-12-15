@@ -97,7 +97,7 @@ class LCDSequencer: # must initiate in main file: lcd = LCDSequencer()
     """
         LCD Class
     """
-    #lcd = lcd = CharLCD(i2c_expander='PCF8574', address=0x26, cols=16, rows=2, auto_linebreaks=True, backlight_enabled=True)
+    #dans l'init: lcd = lcd = CharLCD(i2c_expander='PCF8574', address=0x26, cols=16, rows=2, auto_linebreaks=True, backlight_enabled=True)
 
     def __init__(self):
         '''
@@ -152,6 +152,15 @@ class LCDSequencer: # must initiate in main file: lcd = LCDSequencer()
         self.lcd.write_string(str(output.name))
         self.lcd.cursor_pos = (1, 8)
         self.lcd.write_string(str(output.value))
+
+    def displayGate(self, gate):
+        #self.justify('right')
+
+        self.lcd.cursor_pos = (0, 8)
+        self.lcd.write_string("Gate")
+        self.lcd.cursor_pos = (1, 8)
+        #self.lcd.write_string(str(gate))
+        self.lcd.write_string(str(gate*100)+"%")
         
     def test(self):
         print("test" + str(self.testvar))
