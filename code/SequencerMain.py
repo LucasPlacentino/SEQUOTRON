@@ -41,12 +41,11 @@ class Clock: # needs to be changed
 
 def main(): # Main function, activated when sequencer launched
 
-    sequencer = Sequencer
+    sequencer = Sequencer()
     lcd = Simulatelcd()
     #lcd = LCDSequencer()
     lcd.toggleBacklight(True)
 
-    sequencer = Sequencer
     tempo = Tempo(60, lcd) # initial tempo is 60 bpm
     gate = Gate(sequencer.dac2, 0, lcd)
 
