@@ -16,16 +16,19 @@ class Step:
         self.n = 0
         
     def increaseStep(self):
-        self.n += 1
-        self.n = self.n % MAX_STEP     # +1 ?
+        self.n = (self.n + 1) % MAX_STEP
         print("Step : " + str(self.n)) #
 
 
     def decreaseStep(self):
+        self.n = (self.n - 1) % MAX_STEP # si -1 -> 7
+        '''
         if self.n == MIN_STEP:  # step.pitch
             self.n = MAX_STEP
         else:
             self.n -= 1
+        '''
         print("Step : " + str(self.n)) #
+    
 
     

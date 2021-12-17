@@ -10,7 +10,7 @@ from CV import CV
 
 class Sequencer:
 
-    MAX_STEP = 7
+    MAX_STEP = 8
     MIN_STEP = 0
     MAX_TEMPO = 359
     MIN_TEMPO = 2
@@ -69,7 +69,7 @@ for i in range(8): #création de la liste des notes
     l_step.append([0, 1]) #cette liste représente l'octave et la note
 
 
-MAX_STEP = 7
+MAX_STEP = 8
 MIN_STEP = 0
 MAX_TEMPO = 359
 MIN_TEMPO = 2

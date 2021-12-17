@@ -52,16 +52,16 @@ def main(): # Main function, activated when sequencer launched
     note = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"]
     l_steps = []
     for i in range(8): #création de la liste des notes
-        l_steps.append([1, 4]) #cette liste représente l'octave et la note
+        l_steps.append([0, 1]) #cette liste représente l'octave 0 et la note 1
 
     #sequencer.button1.when_pressed = ?.on
     #sequencer.button2.when_pressed = ?.augmenter_pitch
     #sequencer.button3.when_pressed = ?.diminuer_pitch
 
-    sequencer.rotorTempo.when_rotated_clockwise = sequencer.rotorTempo.increaseTempo
-    sequencer.rotorTempo.when_rotated_counter_clockwise = sequencer.rotorTempo.decreaseTempo
-    sequencer.rotorGate.when_rotated_clockwise = sequencer.rotorGate.increaseGate
-    sequencer.rotorGate.when_rotated_counter_clockwise = sequencer.rotorGate.decreaseGate
+    sequencer.rotorTempo.when_rotated_clockwise = tempo.increaseTempo
+    sequencer.rotorTempo.when_rotated_counter_clockwise = tempo.decreaseTempo
+    sequencer.rotorGate.when_rotated_clockwise = gate.increaseGate
+    sequencer.rotorGate.when_rotated_counter_clockwise = gate.decreaseGate
     sequencer.rotorCV1.when_rotated_clockwise = sequencer.rotorCV1.increaseCV
     sequencer.rotorCV1.when_rotated_counter_clockwise = sequencer.rotorCV1.decreaseCV
     sequencer.rotorCV2.when_rotated_clockwise = sequencer.rotorCV2.increaseCV
