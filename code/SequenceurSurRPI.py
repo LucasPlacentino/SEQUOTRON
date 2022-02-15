@@ -209,7 +209,7 @@ def increase_Gate():
         CV.Gate += 0.1
     #dac3.setVoltage(1, int(4096*CV.Gate))
     print("Gate:",round(CV.Gate,1))
-    #TODO update dac
+    #TODO update dac correctly timed
     
 
 def decrease_Gate():
@@ -219,7 +219,7 @@ def decrease_Gate():
         CV.Gate -= 0.1
     #dac3.setVoltage(1, int(4096*CV.Gate))
     print("Gate:",round(CV.Gate,1))
-    #TODO update dac
+    #TODO update dac correctly timed
 
 
 ''' TODO add a button/switch/keyboard interrupt ?

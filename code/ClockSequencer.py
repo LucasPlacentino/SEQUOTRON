@@ -1,6 +1,6 @@
 import time
 
-class ClockSequencer:
+class ClockSequencer:         # TODO
 
     def __init__(self):
         self.internal = True
