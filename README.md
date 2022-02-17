@@ -1,6 +1,50 @@
-# Modular Synth Sequencer - MSS Ruby
+# ***\*WIP\**** Modular Synth Sequencer
 
-***\*WIP\****
+### Table of contents
+
+<!--ts-->
+   * [Description](#description)
+   * [Usage](#usage)
+      * [](#)
+   * [Construction](#construction)
+      * [Design](#design)
+      * [BOM](#bom-bill-of-materials)
+      * [Steps](#steps)
+   * [Code](#code)
+      * [](#)
+   * [Upgrades](#upgrades)
+   * [Notice](#notice)
+   * [About](#about)
+      * [Authors and contributors](#authors-and-contributors)
+      * [Project context](#project-context)
+   * [License](#license)
+
+<!--te-->
+
+# Description
+
+
+# Usage
+
+## a
+
+
+# Construction
+
+## Design
+
+## BOM (Bill Of Materials)
+
+## Steps
+
+
+# Code
+
+## b
+
+
+# Upgrades
+
 
 # Notice
 
@@ -10,9 +54,22 @@
 
 **We are not responsible for any damage that may occur to your devices and equipment. If you are building this and using it, do it at your own risk.**
 
-# ABOUT
 
-BA2 year project - INFO section - **Modular Synth Sequencer** - MSS Ruby
+# About
 
-*2021-2022 TRAN-H201-INFO3* <br>
+## Authors and contributors
+- [Lucas Placentino](https://github.com/lucasplacentino)
+- Felix Rosso
+- Kamil Pietrasz
+- Robin Afuera
+
+## Project Context
+BA2 year project - INFO section - **Modular Synth Sequencer**
+
+*2021-2022 TRAN-H201 - INFO3* <br>
 ***ULB EPB***
+
+
+# License
+- Hardware: *TBD*
+- Software: Distributed under Apache License Version 2.0
