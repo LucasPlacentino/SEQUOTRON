@@ -20,7 +20,7 @@ class Sequencer:
     MAX_PITCH = 12
     MIN_PITCH = 1
     MAX_CV = 25
-    #? LCD = LCDSequencer()
+    LCD = LCDSequencer() #? or in SequencerMain
 
     def __init__(self):
 
@@ -41,15 +41,15 @@ class Sequencer:
         self.dac2 = DACSequencer(0, 0, 7) # physical pin 26
         self.dac3 = DACSequencer(0, 0, 8) # physical pin 24
 
-        self.cv1 = CV(self.dac2, 1)
-        self.cv2 = CV(self.dac3, 0)
-        self.cv3 = CV(self.dac3, 1)
+        self.cv1 = CV(1, self.dac2, 1)
+        self.cv2 = CV(2, self.dac3, 0)
+        self.cv3 = CV(3, self.dac3, 1)
 
         #TODO add switches
-        # OR use a simple Button(pin) and use button.is_pressed (True if HIGH)
+        #* OR use a simple Button(pin) and use button.is_pressed (True if HIGH)
         self.switchClock = InputDevice(pin) # set pin for the switch1 HIGH
         self.switchPause = InputDevice(pin) # set pin for the switch2 HIGH
-        # * then use switch.is_active (True if HIGH or False if LOW)
+        #* then use switchExample.is_active (True if HIGH or False if LOW)
 
         #TODO add input jacks 
             #! convert them to 3.3v

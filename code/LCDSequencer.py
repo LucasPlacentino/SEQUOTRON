@@ -54,14 +54,14 @@ class LCDSequencer: # must initiate in main file: lcd = LCDSequencer()
 
         self.displayNote(step.pitch, step.octave)
 
-    def displayCV(self, cv):
+    def displayCV(self, cvNumber, cvValue):
         #self.justify('right')
-        #self.write(0, "cv" + cv.name.toString() + ":\n" + cv.value.toString())
+        #self.write(0, "cv" + cv.number.toString() + ":\n" + cv.value.toString())
 
         self.lcd.cursor_pos = (0, 8)
-        self.lcd.write_string(str(cv.name))
+        self.lcd.write_string(str(cvNumber))
         self.lcd.cursor_pos = (1, 8)
-        self.lcd.write_string(str(cv.value))
+        self.lcd.write_string(str(int(cvValue)))
 
     def displayGate(self, gate):
         #self.justify('right')
@@ -70,7 +70,7 @@ class LCDSequencer: # must initiate in main file: lcd = LCDSequencer()
         self.lcd.write_string("Gate")
         self.lcd.cursor_pos = (1, 8)
         #self.lcd.write_string(str(gate))
-        self.lcd.write_string(str(gate*100)+"%")
+        self.lcd.write_string(str(int(gate*100))+"%")
         
     def test(self):
         print("test" + str(self.testvar))
