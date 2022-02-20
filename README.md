@@ -71,5 +71,5 @@ BA2 year project - INFO section - **Modular Synth Sequencer**
 
 
 # License
-- Hardware: *TBD*
-- Software: Distributed under Apache License Version 2.0
+- Hardware: Licensed under CERN-OHL-P v2
+- Software: Licensed under Apache License Version 2.0
