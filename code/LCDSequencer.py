@@ -1,9 +1,90 @@
 # activer I2C
 # installer smbus
-#peut etre besoin de pigpio (en plus de gpiozero)
-# et
 
-# CODE PLUS BAS
+from RPLCD.i2c import CharLCD
+
+class LCDSequencer: # must initiate in main file: lcd = LCDSequencer()
+    """
+        * LCD Class
+    """
+    #dans l'init: lcd = lcd = CharLCD(i2c_expander='PCF8574', address=0x26, cols=16, rows=2, auto_linebreaks=True, backlight_enabled=True)
+
+    def __init__(self):
+        '''
+        self.testvar = 0
+        
+        self.pitch = pitch    # besoin ?
+        self.tempo = tempo    # besoin ?
+        self.octave = octave  # besoin ?
+        self.step = step      # besoin ?
+        self.cv = cv  # besoin ?
+        '''
+        self.lcd = CharLCD(i2c_expander='PCF8574', address=0x26, cols=16, rows=2, auto_linebreaks=True, backlight_enabled=False)  # initiate the LCD from the RPLCD.i2c library with these parameters
+        self.lcd.clear() # Clears the LCD
+        #self.lcd.backlight_enabled = True # Turns the backlight ON
+
+    def displayTempo(self, tempo):
+        #self.justify('right')
+        #self.write(0, "Tempo:\n" + tempo.toString() +"BPM")
+        #self.write(0, "Tempo: \n$tempoBPM")
+
+        #self.lcd.text_align_mode = "right" # Si fonctionne, changer cursor_pos à (0,0) ? c'est pas une justify à droite mais une écriture de droite à gauche (lettres inversées)
+        '''We should calculate the space left in the line and reposition the cursor like 16-length("Tempo:")
+        or (PREFERRED) add white spaces before the string and put cursor pos at something like 8 because it will clear any text left on the screen if the previous one was longer'''
+        self.lcd.cursor_pos = (0, 10)
+        self.lcd.write_string("Tempo:")
+        self.lcd.cursor_pos = (1, 10)
+        self.lcd.write_string(str(tempo) + "BPM")
+
+    def displayNote(self, pitch, octave):
+        #self.justify('left')
+        #self.write(1, pitch.toString() + octave.toString())
+
+        self.lcd.cursor_pos = (1, 0)
+        self.lcd.write_string(str(pitch) + str(octave))
+
+    def displayStep(self, step):
+        #self.justify('left')
+        #self.write(0, "Step " + step.toString())
+        #self.write("Step $step")
+
+        #blabla
+        self.lcd.cursor_pos = (0, 0)
+        self.lcd.write_sting("Step " + str(step.nbstep))
+
+        self.displayNote(step.pitch, step.octave)
+
+    def displayCV(self, cv):
+        #self.justify('right')
+        #self.write(0, "cv" + cv.name.toString() + ":\n" + cv.value.toString())
+
+        self.lcd.cursor_pos = (0, 8)
+        self.lcd.write_string(str(cv.name))
+        self.lcd.cursor_pos = (1, 8)
+        self.lcd.write_string(str(cv.value))
+
+    def displayGate(self, gate):
+        #self.justify('right')
+
+        self.lcd.cursor_pos = (0, 8)
+        self.lcd.write_string("Gate")
+        self.lcd.cursor_pos = (1, 8)
+        #self.lcd.write_string(str(gate))
+        self.lcd.write_string(str(gate*100)+"%")
+        
+    def test(self):
+        print("test" + str(self.testvar))
+
+    def clearLCD(self):
+        self.lcd.clear()
+
+    def toggleBacklight(self, boolean):
+        self.lcd.backlight_enabled = boolean
+
+
+
+
+
 
 """
 #pip install rpi-lcd
@@ -19,7 +100,6 @@ lcd.text('Raspberry Pi', 2, 'center')
 sleep(5)
 lcd.clear()
 """
-
 
 
 """pour justifier du texte à droite (voir librairies utlisée)
@@ -90,83 +170,3 @@ for i in range (0, len(my_long_string)):
  sleep(0.4)
  mylcd.lcd_display_string(padding[(15+i):i], 1)
 """
-
-from RPLCD.i2c import CharLCD
-
-class LCDSequencer: # must initiate in main file: lcd = LCDSequencer()
-    """
-        LCD Class
-    """
-    #dans l'init: lcd = lcd = CharLCD(i2c_expander='PCF8574', address=0x26, cols=16, rows=2, auto_linebreaks=True, backlight_enabled=True)
-
-    def __init__(self):
-        '''
-        self.testvar = 0
-        
-        self.pitch = pitch    # besoin ?
-        self.tempo = tempo    # besoin ?
-        self.octave = octave  # besoin ?
-        self.step = step      # besoin ?
-        self.output = output  # besoin ?
-        '''
-        self.lcd = CharLCD(i2c_expander='PCF8574', address=0x26, cols=16, rows=2, auto_linebreaks=True, backlight_enabled=False)  # initiate the LCD from the RPLCD.i2c library with these parameters
-        self.lcd.clear() # Clears the LCD
-        self.lcd.backlight_enabled = True # Turns the backlight ON
-
-    def displayTempo(self, tempo):
-        #self.justify('right')
-        #self.write(0, "Tempo:\n" + tempo.toString() +"BPM")
-        #self.write(0, "Tempo: \n$tempoBPM")
-
-        #self.lcd.text_align_mode = "right" # Si fonctionne, changer cursor_pos à (0,0) ? c'est pas une justify à droite mais une écriture de droite à gauche (lettres inversées)
-        '''We should calculate the space left in the line and reposition the cursor like 16-length("Tempo:")
-        or (PREFERRED) add white spaces before the string and put cursor pos at something like 8 because it will clear any text left on the screen if the previous one was longer'''
-        self.lcd.cursor_pos = (0, 10)
-        self.lcd.write_string("Tempo:")
-        self.lcd.cursor_pos = (1, 10)
-        self.lcd.write_string(str(tempo) + "BPM")
-
-    def displayNote(self, pitch, octave):
-        #self.justify('left')
-        #self.write(1, pitch.toString() + octave.toString())
-
-        self.lcd.cursor_pos = (1, 0)
-        self.lcd.write_string(str(pitch) + str(octave))
-
-    def displayStep(self, step):
-        #self.justify('left')
-        #self.write(0, "Step " + step.toString())
-        #self.write("Step $step")
-
-        #blabla
-        self.lcd.cursor_pos = (0, 0)
-        self.lcd.write_sting("Step " + str(step.nbstep))
-
-        self.displayNote(step.pitch, step.octave)
-
-    def displayOutput(self, output):
-        #self.justify('right')
-        #self.write(0, "Output" + output.name.toString() + ":\n" + output.value.toString())
-
-        self.lcd.cursor_pos = (0, 8)
-        self.lcd.write_string(str(output.name))
-        self.lcd.cursor_pos = (1, 8)
-        self.lcd.write_string(str(output.value))
-
-    def displayGate(self, gate):
-        #self.justify('right')
-
-        self.lcd.cursor_pos = (0, 8)
-        self.lcd.write_string("Gate")
-        self.lcd.cursor_pos = (1, 8)
-        #self.lcd.write_string(str(gate))
-        self.lcd.write_string(str(gate*100)+"%")
-        
-    def test(self):
-        print("test" + str(self.testvar))
-
-    def clearLCD(self):
-        self.lcd.clear()
-
-    def toggleBacklight(self, boolean):
-        self.lcd.backlight_enabled = boolean

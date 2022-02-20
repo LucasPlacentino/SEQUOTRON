@@ -1,6 +1,7 @@
 from DACSequencer import DACSequencer
 from gpiozero import *
 import time
+import LCDSequencer
 import spidev
 from signal import pause
 from MCP4922 import MCP4922
@@ -10,7 +11,7 @@ from CV import CV
 
 class Sequencer:
 
-    MAX_STEP = 8
+    MAX_STEP = 7
     MIN_STEP = 0
     MAX_TEMPO = 359
     MIN_TEMPO = 2
@@ -18,12 +19,17 @@ class Sequencer:
     MIN_OCTAVE = 0
     MAX_PITCH = 12
     MIN_PITCH = 1
+    MAX_CV = 25
+    #? LCD = LCDSequencer()
 
     def __init__(self):
+
+        #? self.lcd = LCDSequencer()
 
         self.button1 = Button(5) # physical pin 29
         self.button2 = Button(6) # physical pin 31
         self.button3 = Button(12) # physical pin 32
+        #TODO add more buttons 
 
         self.rotorTempo = RotaryEncoder(17, 27, "tempo") # physical pin 11 and 13
         self.rotorGate = RotaryEncoder(4, 14, "gate/env") # physical pin 7 and 8
@@ -39,6 +45,22 @@ class Sequencer:
         self.cv2 = CV(self.dac3, 0)
         self.cv3 = CV(self.dac3, 1)
 
+        #TODO add switches
+        # OR use a simple Button(pin) and use button.is_pressed (True if HIGH)
+        self.switchClock = InputDevice(pin) # set pin for the switch1 HIGH
+        self.switchPause = InputDevice(pin) # set pin for the switch2 HIGH
+        # * then use switch.is_active (True if HIGH or False if LOW)
+
+        #TODO add input jacks 
+            #! convert them to 3.3v
+
+
+
+
+
+
+
+''' #* BELOW IS THE CODE ON THE RPI AT THE END OF Q1 (SequencerSurRPI.py)
 
 button1 = Button(5) #29
 button2 = Button(6) #31
@@ -69,7 +91,7 @@ for i in range(8): #création de la liste des notes
     l_step.append([0, 1]) #cette liste représente l'octave et la note
 
 
-MAX_STEP = 8
+MAX_STEP = 7
 MIN_STEP = 0
 MAX_TEMPO = 359
 MIN_TEMPO = 2
@@ -263,3 +285,5 @@ rotor5.when_rotated_counter_clockwise = diminuer_CV3
 
 
 pause()
+
+'''
