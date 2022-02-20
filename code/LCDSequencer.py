@@ -70,7 +70,7 @@ class LCDSequencer: # must initiate in main file: lcd = LCDSequencer()
         self.lcd.write_string("Gate")
         self.lcd.cursor_pos = (1, 8)
         #self.lcd.write_string(str(gate))
-        self.lcd.write_string(str(int(gate*100))+"%")
+        self.lcd.write_string(str(gate*100)+"%") #? int(...)
         
     def test(self):
         print("test" + str(self.testvar))
