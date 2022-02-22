@@ -61,7 +61,7 @@
 ## Authors and contributors
 - [Lucas Placentino](https://github.com/lucasplacentino)
 - Felix Rosso
-- Kamil Pietrasz
+- [Kamil Pietrasz](https://github.com/NexieSlowo)
 - Robin Afuera
 
 ## Project Context
