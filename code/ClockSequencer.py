@@ -1,6 +1,6 @@
 import time
 
-class ClockSequencer:         # TODO
+class ClockSequencer:         # TODO 
 
     def __init__(self):
         self.internal = True
@@ -15,8 +15,7 @@ class ClockSequencer:         # TODO
             print("Error, wrong clock type. Clock set to default (internal)")
             self.internal = True
 
-    def ticking(self, tempo):
-        #sends the clock signal
+    def ticking(self, tempo): #! sends the clock signal to gate, note, sequence, steps, etc
         if self.internal:
             print("tick")
             clock = 1

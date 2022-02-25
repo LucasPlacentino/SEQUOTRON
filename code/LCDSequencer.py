@@ -20,7 +20,7 @@ class LCDSequencer: # must initiate in main file: lcd = LCDSequencer()
         self.cv = cv  # besoin ?
         '''
         self.lcd = CharLCD(i2c_expander='PCF8574', address=0x26, cols=16, rows=2, auto_linebreaks=True, backlight_enabled=False)  # initiate the LCD from the RPLCD.i2c library with these parameters
-        self.lcd.clear() # Clears the LCD
+        self.fullClearLCD() # Clears the LCD
         #self.lcd.backlight_enabled = True # Turns the backlight ON
 
     def displayTempo(self, tempo):
@@ -28,18 +28,22 @@ class LCDSequencer: # must initiate in main file: lcd = LCDSequencer()
         #self.write(0, "Tempo:\n" + tempo.toString() +"BPM")
         #self.write(0, "Tempo: \n$tempoBPM")
 
+        self.clearRightLCD()
         #self.lcd.text_align_mode = "right" # Si fonctionne, changer cursor_pos à (0,0) ? c'est pas une justify à droite mais une écriture de droite à gauche (lettres inversées)
         '''We should calculate the space left in the line and reposition the cursor like 16-length("Tempo:")
         or (PREFERRED) add white spaces before the string and put cursor pos at something like 8 because it will clear any text left on the screen if the previous one was longer'''
+        stringTempo = str(tempo)+"BPM"
+        cursorPosTempo = 16 - len(stringTempo) # because the LCD is 16 character long
         self.lcd.cursor_pos = (0, 10)
         self.lcd.write_string("Tempo:")
-        self.lcd.cursor_pos = (1, 10)
-        self.lcd.write_string(str(tempo) + "BPM")
+        self.lcd.cursor_pos = (1, cursorPosTempo)
+        self.lcd.write_string(stringTempo)
 
     def displayNote(self, pitch, octave):
         #self.justify('left')
         #self.write(1, pitch.toString() + octave.toString())
 
+        self.clearBottomLeftLCD()
         self.lcd.cursor_pos = (1, 0)
         self.lcd.write_string(str(pitch) + str(octave))
 
@@ -47,36 +51,55 @@ class LCDSequencer: # must initiate in main file: lcd = LCDSequencer()
         #self.justify('left')
         #self.write(0, "Step " + step.toString())
         #self.write("Step $step")
-
+        self.clearTopLeftLCD()
         #blabla
         self.lcd.cursor_pos = (0, 0)
-        self.lcd.write_sting("Step " + str(step.nbstep))
+        self.lcd.write_string("Step " + str(step.nbstep))
 
         self.displayNote(step.pitch, step.octave)
 
     def displayCV(self, cvNumber, cvValue):
         #self.justify('right')
         #self.write(0, "cv" + cv.number.toString() + ":\n" + cv.value.toString())
-
-        self.lcd.cursor_pos = (0, 8)
-        self.lcd.write_string(str(cvNumber))
-        self.lcd.cursor_pos = (1, 8)
-        self.lcd.write_string(str(int(cvValue)))
+        self.clearRightLCD()
+        stringCV = str(int(cvValue)) #? +"%" ?
+        cursorPosCV = 16 - len(stringCV)
+        self.lcd.cursor_pos = (0, 10)
+        self.lcd.write_string("CV #"+str(cvNumber)+":")
+        self.lcd.cursor_pos = (1, cursorPosCV)
+        self.lcd.write_string(stringCV)
 
     def displayGate(self, gate):
         #self.justify('right')
-
-        self.lcd.cursor_pos = (0, 8)
-        self.lcd.write_string("Gate")
-        self.lcd.cursor_pos = (1, 8)
+        self.clearRightLCD()
+        stringGate = str(int(gate*100))+"%" #? int()
+        cursorPosGate = 16 - len(stringGate)
+        self.lcd.cursor_pos = (0, 11)
+        self.lcd.write_string("Gate:")
+        self.lcd.cursor_pos = (1, cursorPosGate)
         #self.lcd.write_string(str(gate))
-        self.lcd.write_string(str(gate*100)+"%") #? int(...)
+        self.lcd.write_string(stringGate)
         
     def test(self):
-        print("test" + str(self.testvar))
+        print("test lcd")# + str(self.testvar))
+        self.lcd.cursor_pos(0,0)
+        self.lcd.write_string("TEST")
 
-    def clearLCD(self):
+    def fullClearLCD(self):
         self.lcd.clear()
+
+    def clearRightLCD(self): # clears the LCD from the 8th column (the right side of the screen)
+        for i in range(1):
+            self.lcd.cursor_pos = (i,8)
+            self.write_string(" "*8)
+
+    def clearTopLeftLCD(self):
+        self.lcd.cursor_pos(0,0)
+        self.write_string(" "*8)
+
+    def clearBottomLeftLCD(self):
+        self.lcd.cursor_pos(1, 0)
+        self.write_string(" "*8)
 
     def toggleBacklight(self, boolean):
         self.lcd.backlight_enabled = boolean
@@ -85,7 +108,7 @@ class LCDSequencer: # must initiate in main file: lcd = LCDSequencer()
 
 
 
-
+#! below were just different libraries tests
 """
 #pip install rpi-lcd
 from rpi_lcd import LCD
