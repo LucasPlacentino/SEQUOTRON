@@ -19,6 +19,7 @@ MAX_PITCH = 12
 MIN_PITCH = 1
 MAX_CV = 25
 LCD = LCDSequencer() #? or in SequencerMain
+MAX_DAC = 4095
 
 class Sequencer:
 
