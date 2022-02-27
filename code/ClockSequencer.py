@@ -1,6 +1,35 @@
 import time
+import threading
 
-class ClockSequencer:         # TODO 
+
+class Tempo:
+    value = 100
+    n = 0
+    on = "on"
+
+tempo = Tempo()
+
+
+def setvoltage():
+    dac3.setVoltage(1, 12*l_step[tempo.n][0] + l_step[tempo.n][1])
+
+
+def off():
+    tempo.on = "off"
+
+
+def on():
+    tempo.on = "on"
+    while tempo.on == "on":
+        threading.Timer(60/tempo.value, setvoltage).start()
+        tempo.n += 1
+        tempo.n = tempo.n%8
+        button1.when_released = off
+
+
+
+
+"""class ClockSequencer:         # TODO 
 
     def __init__(self):
         self.internal = True
@@ -21,8 +50,8 @@ class ClockSequencer:         # TODO
             clock = 1
             #time.sleep(60/self.tempo.current_tempo)
             #send a clock signal
-            time.sleep(60/tempo.current_tempo)
             clock = 0
         else:
             #external clock
             pass
+"""

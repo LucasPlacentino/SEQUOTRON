@@ -58,6 +58,8 @@ MAX_CV = 25
 
 class Tempo:
     value = 100
+    n = 0
+    on = "on"
 
 tempo = Tempo()
 
@@ -76,8 +78,6 @@ class CV:
     
 CV = CV()
 
-class bouton:
-    on = "on"
 
 bouton = bouton()
 
@@ -229,14 +229,17 @@ def decrease_Gate():
 
 
 def setvoltage():
-    dac3.setVoltage(1, 12*l_step[i][0] + l_step[i][1])
+    dac3.setVoltage(1, 12*l_step[tempo.n][0] + l_step[tempo.n][1])
 
 def off():
-    bouton.on = "off"
+    tempo.on = "off"
 
 def on():
-    while bouton.on == "on":
-        threading.Timer(60/tempo.valeur, setvoltage).start()
+    tempo.on = "on"
+    while tempo.on == "on":
+        threading.Timer(60/tempo.value, setvoltage).start()
+        tempo.n += 1
+        tempo.n = tempo.n%8
         button1.when_released = off
 
 
@@ -256,7 +259,7 @@ def on():
 '''
 # C0 - (B#4) - C5
 
-#button1.when_pressed = on
+button1.when_pressed = on
 #button2.when_pressed = increase_octave
 #button3.when_pressed = decrease_octave
 
