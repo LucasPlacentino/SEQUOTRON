@@ -1,7 +1,7 @@
 from DACSequencer import DACSequencer
 import gpiozero
 import time
-import LCDSequencer
+from LCDSequencer import LCDSequencer
 import spidev
 from signal import pause
 from MCP4922 import MCP4922
@@ -53,9 +53,9 @@ class Sequencer:
         self.rotorCV3 = RotaryEncoder(24, 25, "cv", 3) # physical pin 18 and 22
         #? self.rotorStep = RotaryEncoder(,,"step",) #
 
-        self.dac1 = DACSequencer(0, 0, 5) # could be a MCP4921, physical pin 29
-        self.dac2 = DACSequencer(0, 0, 7) # physical pin 26
-        self.dac3 = DACSequencer(0, 0, 8) # physical pin 24
+        self.dac1 = DACSequencer(0, 0, 7) # could be a MCP4921, physical pin 29
+        self.dac2 = DACSequencer(0, 0, 8) # physical pin 26
+        self.dac3 = DACSequencer(0, 0, 9) # physical pin 24
 
         self.cv1 = CV(1, self.dac2, 1)
         self.cv2 = CV(2, self.dac3, 0)
@@ -63,8 +63,8 @@ class Sequencer:
 
         #TODO add switches
         #* OR use a simple Button(pin) and use button.is_pressed (True if HIGH)
-        self.switchClock = gpiozero.InputDevice(pin) # set pin for the switch1 HIGH
-        self.switchPause = gpiozero.InputDevice(pin) # set pin for the switch2 HIGH
+        self.switchClock = gpiozero.InputDevice(19) # set pin for the switch1 HIGH - physical pin 35
+        self.switchPause = gpiozero.InputDevice(20) # set pin for the switch2 HIGH - physical pin 38
         #* then use switchExample.is_active (True if HIGH or False if LOW)
 
         #TODO add input jacks 
