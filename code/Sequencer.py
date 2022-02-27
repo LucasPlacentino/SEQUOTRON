@@ -1,10 +1,18 @@
 from DACSequencer import DACSequencer
 import gpiozero
+<<<<<<< HEAD
 # import time
 from LCDSequencer import LCDSequencer
 # import spidev
 # from signal import pause
 # from MCP4922 import MCP4922
+=======
+import time
+from LCDSequencer import LCDSequencer
+import spidev
+from signal import pause
+from MCP4922 import MCP4922
+>>>>>>> 5c477435e1cd350d8b639f2c8479b3e7bdf0415d
 from RotaryEncoder import RotaryEncoder
 from CV import CV
 
@@ -18,9 +26,16 @@ MIN_OCTAVE = 0
 MAX_PITCH = 12
 MIN_PITCH = 1
 MAX_CV = 25
+<<<<<<< HEAD
 LCD = LCDSequencer() # ? or in SequencerMain
 MAX_DAC = 4095
 LED_QUANTITY = 8
+=======
+LCD = LCDSequencer() #? or in SequencerMain
+MAX_DAC = 4095
+LED_QUANTITY = 8
+
+>>>>>>> 5c477435e1cd350d8b639f2c8479b3e7bdf0415d
 class Sequencer:
 
     '''
@@ -52,9 +67,9 @@ class Sequencer:
         self.rotorCV3 = RotaryEncoder(24, 25, "cv", 3) # physical pin 18 and 22
         #? self.rotorStep = RotaryEncoder(,,"step",) #
 
-        self.dac1 = DACSequencer(0, 0, 5) # could be a MCP4921, physical pin 29
-        self.dac2 = DACSequencer(0, 0, 7) # physical pin 26
-        self.dac3 = DACSequencer(0, 0, 8) # physical pin 24
+        self.dac1 = DACSequencer(0, 0, 7) # could be a MCP4921, physical pin 29
+        self.dac2 = DACSequencer(0, 0, 8) # physical pin 26
+        self.dac3 = DACSequencer(0, 0, 9) # physical pin 24
 
         self.cv1 = CV(1, self.dac2, 1)
         self.cv2 = CV(2, self.dac3, 0)
@@ -62,8 +77,13 @@ class Sequencer:
 
         #TODO add switches
         #* OR use a simple Button(pin) and use button.is_pressed (True if HIGH)
+<<<<<<< HEAD
         self.switchClock = gpiozero.InputDevice(19) # set pin for the switch1 HIGH
         self.switchPause = gpiozero.InputDevice(20) # set pin for the switch2 HIGH
+=======
+        self.switchClock = gpiozero.InputDevice(19) # set pin for the switch1 HIGH - physical pin 35
+        self.switchPause = gpiozero.InputDevice(20) # set pin for the switch2 HIGH - physical pin 38
+>>>>>>> 5c477435e1cd350d8b639f2c8479b3e7bdf0415d
         #* then use switchExample.is_active (True if HIGH or False if LOW)
 
         #TODO add input jacks 
