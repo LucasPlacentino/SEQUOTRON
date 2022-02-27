@@ -1,5 +1,5 @@
 from DACSequencer import DACSequencer
-from gpiozero import *
+import gpiozero
 import time
 import LCDSequencer
 import spidev
@@ -9,8 +9,20 @@ from RotaryEncoder import RotaryEncoder
 from CV import CV
 
 
+MAX_STEP = 7
+MIN_STEP = 0
+MAX_TEMPO = 359
+MIN_TEMPO = 2
+MAX_OCTAVE = 2 # 4 when 5V, here only 2 because only 3.3V
+MIN_OCTAVE = 0
+MAX_PITCH = 12
+MIN_PITCH = 1
+MAX_CV = 25
+LCD = LCDSequencer() #? or in SequencerMain
+
 class Sequencer:
 
+    '''
     MAX_STEP = 7
     MIN_STEP = 0
     MAX_TEMPO = 359
@@ -21,14 +33,15 @@ class Sequencer:
     MIN_PITCH = 1
     MAX_CV = 25
     LCD = LCDSequencer() #? or in SequencerMain
+    '''
 
     def __init__(self):
 
         #? self.lcd = LCDSequencer()
 
-        self.button1 = Button(5) # physical pin 29
-        self.button2 = Button(6) # physical pin 31
-        self.button3 = Button(12) # physical pin 32
+        self.button1 = gpiozero.Button(5) # physical pin 29
+        self.button2 = gpiozero.Button(6) # physical pin 31
+        self.button3 = gpiozero.Button(12) # physical pin 32
         #TODO add more buttons 
 
         self.rotorTempo = RotaryEncoder(17, 27, "tempo") # physical pin 11 and 13
@@ -36,6 +49,7 @@ class Sequencer:
         self.rotorCV1 = RotaryEncoder(15, 18, "cv", 1) # physical pin 10 and 12
         self.rotorCV2 = RotaryEncoder(22, 23, "cv", 2) # physcial pin 15 and 16
         self.rotorCV3 = RotaryEncoder(24, 25, "cv", 3) # physical pin 18 and 22
+        #? self.rotorStep = RotaryEncoder(,,"step",) #
 
         self.dac1 = DACSequencer(0, 0, 5) # could be a MCP4921, physical pin 29
         self.dac2 = DACSequencer(0, 0, 7) # physical pin 26
@@ -47,8 +61,8 @@ class Sequencer:
 
         #TODO add switches
         #* OR use a simple Button(pin) and use button.is_pressed (True if HIGH)
-        self.switchClock = InputDevice(pin) # set pin for the switch1 HIGH
-        self.switchPause = InputDevice(pin) # set pin for the switch2 HIGH
+        self.switchClock = gpiozero.InputDevice(pin) # set pin for the switch1 HIGH
+        self.switchPause = gpiozero.InputDevice(pin) # set pin for the switch2 HIGH
         #* then use switchExample.is_active (True if HIGH or False if LOW)
 
         #TODO add input jacks 
