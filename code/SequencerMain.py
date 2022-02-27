@@ -2,16 +2,16 @@
 TRANH201INFO3 sequencer test code
 """
 
-import gpiozero
+# import gpiozero
 import time
 
-from Step import Step #Step class
-from LCDSequencer import LCDSequencer #LCD class
+# from Step import Step #Step class
+# from LCDSequencer import LCDSequencer #LCD class
 from Simulatelcd import Simulatelcd #Simulated LCD class, for testing purposes and/or when not running on a RPi
-from DACSequencer import DACSequencer #DAC class
-from RotaryEncoder import RotaryEncoder #Rotary encoder class
-from ClockSequencer import ClockSequencer #Clock class
-from LEDSequence import LEDSequence #LEDs Sequence class (8 LEDs)
+# from DACSequencer import DACSequencer #DAC class
+# from RotaryEncoder import RotaryEncoder #Rotary encoder class
+# TODO from ClockSequencer import ClockSequencer # Clock class
+# from LEDSequence import LEDSequence #LEDs Sequence class (8 LEDs)
 from Sequencer import Sequencer
 from Tempo import Tempo
 from Gate import Gate

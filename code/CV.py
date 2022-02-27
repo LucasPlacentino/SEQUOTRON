@@ -1,4 +1,4 @@
-from Sequencer import MAX_CV, LCD
+from Sequencer import MAX_CV, LCD, MAX_DAC
 #? from Sequencer import Sequencer, dac1, dac2, dac3
 
 class CV:
@@ -12,8 +12,8 @@ class CV:
     def increaseCV(self):
         self.value += 1
         #self.value = self.n%24 # (self.n%24) + 1 ?
-        self.value = self.n%MAX_CV
-        self.dac.setVoltage(self.channel, int(float(4096)*CV.CV1/24)) #! MAX_CV rather than 24 ?
+        self.value = self.value%MAX_CV
+        self.dac.setVoltage(self.channel, int(MAX_DAC*self.value/24)) #! MAX_CV rather than 24 ?
         print(self, self.dac, self.channel, self.value)
         LCD.displayCV(self.number, self.value) #? need to test
 
@@ -22,6 +22,6 @@ class CV:
             self.value = 24
         else:
             self.value -= 1
-        self.dac.setVoltage(self.channel, int(float(4096)*CV.CV2/24)) #! MAX_CV rather than 24 ?
+        self.dac.setVoltage(self.channel, int(MAX_DAC*self.value/24)) #! MAX_CV rather than 24 ?
         print(self, self.dac, self.channel, self.value)
         LCD.displayCV(self.number, self.value) #? need to test

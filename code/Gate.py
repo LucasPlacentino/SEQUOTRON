@@ -1,6 +1,6 @@
-import time
-#from Sequencer import Sequencer
-#from LCDSequencer import LCDSequencer
+# import time
+# from Sequencer import Sequencer
+# from LCDSequencer import LCDSequencer
 
 class Gate:
 
@@ -16,7 +16,7 @@ class Gate:
         else:
             self.value += 0.1
         self.lcd.displayGate(round(self.value,1))
-        #self.dac.setVoltage(self.channel, 4096) for an amount of time
+        # self.dac.setVoltage(self.channel, 4096) for an amount of time
         print(self, self.dac, self.channel, round(self.value,1))
 
     
@@ -26,7 +26,7 @@ class Gate:
         else:
             self.value -= 0.1
         self.lcd.displayGate(round(self.value,1))
-        #self.dac.setVoltage(self.channel, 4096)  for an amount of time
+        # self.dac.setVoltage(self.channel, 4096)  for an amount of time
         print(self, self.dac, self.channel, round(self.value,1))
 
     def sendGateSignal(self, tempo): # called every step

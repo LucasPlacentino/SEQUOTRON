@@ -1,10 +1,10 @@
 from DACSequencer import DACSequencer
 import gpiozero
-import time
-import LCDSequencer
-import spidev
-from signal import pause
-from MCP4922 import MCP4922
+# import time
+from LCDSequencer import LCDSequencer
+# import spidev
+# from signal import pause
+# from MCP4922 import MCP4922
 from RotaryEncoder import RotaryEncoder
 from CV import CV
 
@@ -18,8 +18,9 @@ MIN_OCTAVE = 0
 MAX_PITCH = 12
 MIN_PITCH = 1
 MAX_CV = 25
-LCD = LCDSequencer() #? or in SequencerMain
-
+LCD = LCDSequencer() # ? or in SequencerMain
+MAX_DAC = 4095
+LED_QUANTITY = 8
 class Sequencer:
 
     '''
@@ -61,8 +62,8 @@ class Sequencer:
 
         #TODO add switches
         #* OR use a simple Button(pin) and use button.is_pressed (True if HIGH)
-        self.switchClock = gpiozero.InputDevice(pin) # set pin for the switch1 HIGH
-        self.switchPause = gpiozero.InputDevice(pin) # set pin for the switch2 HIGH
+        self.switchClock = gpiozero.InputDevice(19) # set pin for the switch1 HIGH
+        self.switchPause = gpiozero.InputDevice(20) # set pin for the switch2 HIGH
         #* then use switchExample.is_active (True if HIGH or False if LOW)
 
         #TODO add input jacks 

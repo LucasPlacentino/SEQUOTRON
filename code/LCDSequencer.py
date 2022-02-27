@@ -91,15 +91,15 @@ class LCDSequencer: # must initiate in main file: lcd = LCDSequencer()
     def clearRightLCD(self): # clears the LCD from the 8th column (the right side of the screen)
         for i in range(1):
             self.lcd.cursor_pos = (i,8)
-            self.write_string(" "*8)
+            self.lcd.write_string(" "*8)
 
     def clearTopLeftLCD(self):
         self.lcd.cursor_pos(0,0)
-        self.write_string(" "*8)
+        self.lcd.write_string(" "*8)
 
     def clearBottomLeftLCD(self):
         self.lcd.cursor_pos(1, 0)
-        self.write_string(" "*8)
+        self.lcd.write_string(" "*8)
 
     def toggleBacklight(self, boolean):
         self.lcd.backlight_enabled = boolean
