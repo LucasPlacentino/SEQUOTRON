@@ -20,6 +20,7 @@ MIN_PITCH = 1
 MAX_CV = 25
 LCD = LCDSequencer() #? or in SequencerMain
 MAX_DAC = 4095
+LED_QUANTITY = 8
 
 class Sequencer:
 
