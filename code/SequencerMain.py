@@ -54,27 +54,33 @@ def main(): # Main function, activated when sequencer launched
     for i in range(8): #création de la liste des notes
         l_steps.append([0, 1]) #cette liste représente l'octave 0 et la note 1
 
+    def increase_pitch():
+        print("test increase pitch")
+        
+    def decrease_pitch():
+        print("test decrease pitch")
+    
     #sequencer.button1.when_pressed = ?.on
-    #sequencer.button2.when_pressed = ?.augmenter_pitch
-    #sequencer.button3.when_pressed = ?.diminuer_pitch
+    sequencer.buttonIncrOct.when_pressed = increase_pitch #!
+    sequencer.buttonDecrOct.when_pressed = decrease_pitch #!
 
     sequencer.rotorTempo.when_rotated_clockwise = tempo.increaseTempo
     sequencer.rotorTempo.when_rotated_counter_clockwise = tempo.decreaseTempo
-    sequencer.rotorGate.when_rotated_clockwise = gate.increaseGate
-    sequencer.rotorGate.when_rotated_counter_clockwise = gate.decreaseGate
-    sequencer.rotorCV1.when_rotated_clockwise = sequencer.rotorCV1.increaseCV
-    sequencer.rotorCV1.when_rotated_counter_clockwise = sequencer.rotorCV1.decreaseCV
-    sequencer.rotorCV2.when_rotated_clockwise = sequencer.rotorCV2.increaseCV
-    sequencer.rotorCV2.when_rotated_counter_clockwise = sequencer.rotorCV2.decreaseCV
-    sequencer.rotorCV3.when_rotated_clockwise = sequencer.rotorCV3.increaseCV
-    sequencer.rotorCV3.when_rotated_counter_clockwise = sequencer.rotorCV3.decreaseCV
+    #sequencer.rotorGate.when_rotated_clockwise = gate.increaseGate
+    #sequencer.rotorGate.when_rotated_counter_clockwise = gate.decreaseGate
+    sequencer.rotorCV1.when_rotated_clockwise = sequencer.cv1.increaseCV
+    sequencer.rotorCV1.when_rotated_counter_clockwise = sequencer.cv1.decreaseCV
+    sequencer.rotorCV2.when_rotated_clockwise = sequencer.cv2.increaseCV
+    sequencer.rotorCV2.when_rotated_counter_clockwise = sequencer.cv2.decreaseCV
+    sequencer.rotorCV3.when_rotated_clockwise = sequencer.cv3.increaseCV
+    sequencer.rotorCV3.when_rotated_counter_clockwise = sequencer.cv3.decreaseCV
 
     # sequence led, sequence gate send following tempo
 
     # for testing :
     for p in range (10): # does the step sequence 10 times
         for i in range(0,7):
-            gate.sendGateSignal(tempo)
+            #gate.sendGateSignal(tempo)
             pitchDAC = 4096*(l_steps[i][1]/12) # need to add octaves
             sequencer.dac1.setVoltage(0, pitchDAC)
             time.sleep(60/tempo.value)

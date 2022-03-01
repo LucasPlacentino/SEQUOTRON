@@ -1,5 +1,10 @@
-from Sequencer import MAX_CV, LCD, MAX_DAC
-#? from Sequencer import Sequencer, dac1, dac2, dac3
+# from Sequencer import MAX_CV, LCD, MAX_DAC
+# ? from Sequencer import Sequencer, dac1, dac2, dac3
+from Simulatelcd import Simulatelcd
+
+MAX_CV = 25
+LCD = Simulatelcd()
+MAX_DAC = 4095
 
 class CV:
 

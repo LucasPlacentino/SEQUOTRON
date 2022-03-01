@@ -1,11 +1,11 @@
 from Sequencer import MAX_TEMPO, MIN_TEMPO #? , LCD
-#? import Sequencer
+# ? import Sequencer
 
 
 class Tempo:
 
-    #? lcd = Sequencer.lcd
-    #? lcd = LCD
+    # ? lcd = Sequencer.lcd
+    # ? lcd = LCD
 
     def __init__(self, initalTempo, lcd):
         self.value = initalTempo

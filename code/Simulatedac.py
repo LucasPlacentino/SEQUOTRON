@@ -8,4 +8,4 @@ class Simulatedac():
         self.ce = pinCE
 
     def setVoltage(self, channel, value):
-        print(self, "channel:", channel, "value", value)
+        print("DAC ce:", self.ce, ", channel:", channel, ", value:", value)
