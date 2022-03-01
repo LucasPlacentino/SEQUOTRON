@@ -1,5 +1,8 @@
 # Python cache
 *.pyc
 __pycache__/
+
 .idea
 .DS_Store
+
+MCP4922/
