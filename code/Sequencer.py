@@ -1,16 +1,19 @@
+# Sequencer Class
 from DACSequencer import DACSequencer
 import gpiozero
-# import time
-# from LCDSequencer import LCDSequencer
+#? import time
+from LCDSequencer import LCDSequencer
 from Simulatelcd import Simulatelcd
 from Simulatedac import Simulatedac
 import spidev
-from signal import pause
+#? from signal import pause
 from MCP4922 import MCP4922
 from RotaryEncoder import RotaryEncoder
 from CV import CV
+from NoteSequence import NoteSequence
 
-
+from Env import MAX_STEP, MIN_STEP, MAX_TEMPO, MIN_TEMPO, MAX_OCTAVE, MIN_OCTAVE, MAX_PITCH, MIN_PITCH, MAX_CV,MIN_CV, MAX_DAC, LED_QUANTITY, PITCH_CHANNEL, CV1_CHANNEL, CV2_CHANNEL, CV3_CHANNEL, GATE_CHANNEL, NB_NOTES, NB_STEPS
+'''
 MAX_STEP = 7
 MIN_STEP = 0
 MAX_TEMPO = 359
@@ -20,10 +23,11 @@ MIN_OCTAVE = 0
 MAX_PITCH = 12
 MIN_PITCH = 1
 MAX_CV = 25
-#LCD = LCDSequencer() # ? or in SequencerMain
-LCD = Simulatelcd()
 MAX_DAC = 4095
 LED_QUANTITY = 8
+'''
+#LCD = LCDSequencer() # ? or in SequencerMain
+LCD = Simulatelcd()  # ? or in SequencerMain
 class Sequencer:
 
     '''
@@ -43,14 +47,22 @@ class Sequencer:
 
         # ? self.lcd = LCDSequencer()
 
+        self.noteSequence = NoteSequence(LCD)
+
         self.button1 = gpiozero.Button(5) # physical pin 29
-        self.buttonIncrOct = gpiozero.Button(13) # physical pin 33
-        self.buttonDecrOct = gpiozero.Button(16) # physical pin 36
-        #TODO add more buttons 
+        self.buttonIncrOct = gpiozero.Button(13) #? physical pin 33
+        self.buttonDecrOct = gpiozero.Button(16) #? physical pin 36
+        self.buttonHearNote = gpiozero.Button(4000000) # physical pin ?
+        self.buttonShowCV1 = gpiozero.Button(4000000) # physical pin ?
+        self.buttonShowCV2 = gpiozero.Button(4000000) # physical pin ?
+        self.buttonShowCV3 = gpiozero.Button(4000000) # physical pin ?
+        self.buttonShowTempo = gpiozero.Button(4000000) # physical pin ?
+        self.buttonShowGate = gpiozero.Button(4000000) # physical pin ?
+        #? TODO add more buttons 
 
         self.rotorPitch = RotaryEncoder(4, 14,"pitch") # ?
         self.rotorTempo = RotaryEncoder(17, 27, "tempo") # physical pin 11 and 13
-        #self.rotorGate = RotaryEncoder(4, 14, "gate/env") # physical pin 7 and 8
+        self.rotorGate = RotaryEncoder(4, 14, "gate/env") # physical pin 7 and 8
         self.rotorCV1 = RotaryEncoder(15, 18, "cv", 1) # physical pin 10 and 12
         self.rotorCV2 = RotaryEncoder(22, 23, "cv", 2) # physcial pin 15 and 16
         self.rotorCV3 = RotaryEncoder(24, 25, "cv", 3) # physical pin 18 and 22
@@ -65,9 +77,9 @@ class Sequencer:
         self.dac3 = DACSequencer(0, 0, 9) # physical pin 24
         '''
 
-        self.cv1 = CV(1, self.dac2, 1)
-        self.cv2 = CV(2, self.dac3, 0)
-        self.cv3 = CV(3, self.dac3, 1)
+        self.cv1 = CV(1, self.dac2, 1) #? CV1_CHANNEL 
+        self.cv2 = CV(2, self.dac3, 0) #? CV2_CHANNEL 
+        self.cv3 = CV(3, self.dac3, 1) #? CV3_CHANNEL 
 
         #TODO add switches
         #* OR use a simple Button(pin) and use button.is_pressed (True if HIGH)
@@ -77,6 +89,23 @@ class Sequencer:
 
         #TODO add input jacks 
             #! convert them to 3.3v
+
+    def showCV1(self): # shows this CV value when button is pressed
+        LCD.displayCV(1,self.cv1.value)
+        print("show CV1:", self.cv1.value)
+    def showCV2(self): # shows this CV value when button is pressed
+        LCD.displayCV(2,self.cv2.value)
+        print("show CV2:", self.cv2.value)
+    def showCV3(self): # shows this CV value when button is pressed
+        LCD.displayCV(3,self.cv3.value)
+        print("show CV3:", self.cv3.value)
+
+    def playNote(self): # plays the current note (selected current step) when button is pressed
+        currentOctave = self.noteSequence.listSteps[self.noteSequence.step][0] # octave of the current note
+        currentPitch = self.noteSequence.listSteps[self.noteSequence.step][1] # pitch of the current note
+        currentNote = MAX_DAC*(((currentOctave*12)+currentPitch)/NB_NOTES)
+        self.dac1.setVoltage(PITCH_CHANNEL, int(currentNote))
+        print("play current note:",currentPitch,currentOctave,currentNote)
 
 
 

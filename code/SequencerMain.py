@@ -15,6 +15,85 @@ from Simulatelcd import Simulatelcd #Simulated LCD class, for testing purposes a
 from Sequencer import Sequencer
 from Tempo import Tempo
 from Gate import Gate
+
+
+def main(): # Main function, activated when sequencer launched
+
+    sequencer = Sequencer()
+    lcd = Simulatelcd()
+    #lcd = LCDSequencer()
+    lcd.toggleBacklight(True)
+
+    tempo = Tempo(60, lcd) # initial tempo is 60 bpm
+    gate = Gate(sequencer.dac2, 0, lcd)
+
+    '''
+    note = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"]
+    l_steps = []
+    for i in range(8): #création de la liste des notes
+        l_steps.append([0, 1]) #cette liste représente l'octave 0 et la note 1
+    '''
+
+    '''
+    def increase_pitch():
+        print("test increase pitch")
+    def decrease_pitch():
+        print("test decrease pitch")
+    sequencer.buttonIncrOct.when_pressed = increase_pitch # TODO ?
+    sequencer.buttonDecrOct.when_pressed = decrease_pitch # TODO ?
+    '''
+    
+    #sequencer.button1.when_pressed = ?.on # TODO
+    sequencer.buttonIncrOct.when_pressed = sequencer.noteSequence.increaseOctave #?
+    sequencer.buttonDecrOct.when_pressed = sequencer.noteSequence.decreaseOctave #?
+    sequencer.buttonHearNote.when_pressed = sequencer.playNote
+
+    sequencer.rotorPitch.when_rotated_clockwise = sequencer.noteSequence.increasePitch
+    sequencer.rotorPitch.when_rotated_counter_clockwise = sequencer.noteSequence.decreasePitch
+    sequencer.rotorTempo.when_rotated_clockwise = tempo.increaseTempo
+    sequencer.rotorTempo.when_rotated_counter_clockwise = tempo.decreaseTempo
+    sequencer.rotorGate.when_rotated_clockwise = gate.increaseGate # TODO
+    sequencer.rotorGate.when_rotated_counter_clockwise = gate.decreaseGate # TODO
+    sequencer.rotorCV1.when_rotated_clockwise = sequencer.cv1.increaseCV
+    sequencer.rotorCV1.when_rotated_counter_clockwise = sequencer.cv1.decreaseCV
+    sequencer.rotorCV2.when_rotated_clockwise = sequencer.cv2.increaseCV
+    sequencer.rotorCV2.when_rotated_counter_clockwise = sequencer.cv2.decreaseCV
+    sequencer.rotorCV3.when_rotated_clockwise = sequencer.cv3.increaseCV
+    sequencer.rotorCV3.when_rotated_counter_clockwise = sequencer.cv3.decreaseCV
+
+    # sequence led, sequence gate send following tempo
+
+    ''' for testing :
+    for p in range (10): # does the step sequence 10 times
+        for i in range(0,7):
+            #* gate.sendGateSignal(tempo)
+            pitchDAC = 4096*(l_steps[i][1]/12) # need to add octaves
+            sequencer.dac1.setVoltage(0, pitchDAC)
+            time.sleep(60/tempo.value)
+    '''
+
+
+def endSequencer():
+    # Set the DACs to 0V and turns the LCD backlight off (executed when keyboard interrupt or other)
+    sequencer = Sequencer() # ?
+    lcd = Simulatelcd() # ?
+    for i in range(2):
+        sequencer.dac1.setVoltage(i, 0)
+        sequencer.dac2.setVoltage(i, 0)
+        sequencer.dac3.setVoltage(i, 0)
+    lcd.toggleBacklight(False)
+
+
+if __name__ == "__main__":
+    # launch main() if this file is launched (SequencerMain.py)
+    try:
+        main()
+    except KeyboardInterrupt:  # catches a keyboard interrupt
+        print("Keyboard interrupt, stopping sequencer")
+        endSequencer() # stops the sequencer
+
+
+
 '''
 class Tempo: # needs to be changed ?
     # Tempo
@@ -37,57 +116,15 @@ class Clock: # needs to be changed
         time.sleep(60/tempo.current_tempo)
 '''
 
-
-
-def main(): # Main function, activated when sequencer launched
-
-    sequencer = Sequencer()
-    lcd = Simulatelcd()
-    #lcd = LCDSequencer()
-    lcd.toggleBacklight(True)
-
-    tempo = Tempo(60, lcd) # initial tempo is 60 bpm
-    gate = Gate(sequencer.dac2, 0, lcd)
-
-    note = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"]
-    l_steps = []
-    for i in range(8): #création de la liste des notes
-        l_steps.append([0, 1]) #cette liste représente l'octave 0 et la note 1
-
-    def increase_pitch():
-        print("test increase pitch")
-        
-    def decrease_pitch():
-        print("test decrease pitch")
-    
-    #sequencer.button1.when_pressed = ?.on
-    sequencer.buttonIncrOct.when_pressed = increase_pitch #!
-    sequencer.buttonDecrOct.when_pressed = decrease_pitch #!
-
-    sequencer.rotorTempo.when_rotated_clockwise = tempo.increaseTempo
-    sequencer.rotorTempo.when_rotated_counter_clockwise = tempo.decreaseTempo
-    #sequencer.rotorGate.when_rotated_clockwise = gate.increaseGate
-    #sequencer.rotorGate.when_rotated_counter_clockwise = gate.decreaseGate
-    sequencer.rotorCV1.when_rotated_clockwise = sequencer.cv1.increaseCV
-    sequencer.rotorCV1.when_rotated_counter_clockwise = sequencer.cv1.decreaseCV
-    sequencer.rotorCV2.when_rotated_clockwise = sequencer.cv2.increaseCV
-    sequencer.rotorCV2.when_rotated_counter_clockwise = sequencer.cv2.decreaseCV
-    sequencer.rotorCV3.when_rotated_clockwise = sequencer.cv3.increaseCV
-    sequencer.rotorCV3.when_rotated_counter_clockwise = sequencer.cv3.decreaseCV
-
-    # sequence led, sequence gate send following tempo
-
-    # for testing :
-    for p in range (10): # does the step sequence 10 times
-        for i in range(0,7):
-            #gate.sendGateSignal(tempo)
-            pitchDAC = 4096*(l_steps[i][1]/12) # need to add octaves
-            sequencer.dac1.setVoltage(0, pitchDAC)
-            time.sleep(60/tempo.value)
+'''
+    # End of program:
     sequencer.dac1.setVoltage(0, 0)
+    sequencer.dac2.setVoltage(0, 0)
+    sequencer.dac3.setVoltage(0, 0)
     lcd.toggleBacklight(False)
+'''
 
-    '''
+'''
     lcd = Simulatelcd() # initialization of a simulated LCD, to use when running the program outside of a RPi, it will just print out rather than display on the LCD
     #lcd = LCDSequencer.LCDSequencer() # LCD initialization
     tempo = Tempo(60) # Tempo initialization (default 60 bpm)
@@ -110,11 +147,9 @@ def main(): # Main function, activated when sequencer launched
         clock.ticking(tempo)
 
     lcd.toggleBacklight(False) # Turns the backlight OFF for the end of the program
-    '''
+'''
 
-
-
-    ''' Test code on RPi
+''' Test code on RPi
     lcd.displayNote("A#",4)
     lcd.displayTempo(100)
     step7 = Step(7)
@@ -123,10 +158,5 @@ def main(): # Main function, activated when sequencer launched
     time.sleep(5)
     lcd.clearLCD()
     lcd.toggleBacklight(False)
-    '''
-
-if __name__ == "__main__": 
-    main()
-    # launch main() if this file is launched (SequencerMain.py)
-
+'''
 
