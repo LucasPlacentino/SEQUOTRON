@@ -82,14 +82,17 @@ def endSequencer():
         sequencer.dac2.setVoltage(i, 0)
         sequencer.dac3.setVoltage(i, 0)
     lcd.toggleBacklight(False)
+    print("Sequencer ended")
 
 
 if __name__ == "__main__":
     # launch main() if this file is launched (SequencerMain.py)
     try:
         main()
-    except KeyboardInterrupt:  # catches a keyboard interrupt
-        print("Keyboard interrupt, stopping sequencer")
+    except (KeyboardInterrupt, SystemExit):  # catches a keyboard interrupt or a raised system exit (raise KeyboardInterrupt OR raise SystemExit("_Ending program_") OR sys.exit("_Ending program_"))
+        print("----------\nKeyboard Interrupt or System Exit, stopping sequencer\n----------")
+        #endSequencer() # stops the sequencer
+    finally:
         endSequencer() # stops the sequencer
 
 

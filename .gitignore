@@ -2,7 +2,9 @@
 *.pyc
 __pycache__/
 
+# IDE stuff
 .idea
 .DS_Store
 
+# Libraries
 MCP4922/
