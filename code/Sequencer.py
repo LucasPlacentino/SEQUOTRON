@@ -1,13 +1,13 @@
 # Sequencer Class
-from DACSequencer import DACSequencer
+#from DACSequencer import DACSequencer
 import gpiozero
 #? import time
-from LCDSequencer import LCDSequencer
+#! from LCDSequencer import LCDSequencer
 from Simulatelcd import Simulatelcd
-from Simulatedac import Simulatedac
-import spidev
+from Simulatedac import Simulatedac # ? 
+#? import spidev
 #? from signal import pause
-from MCP4922 import MCP4922
+#? from MCP4922 import MCP4922
 from RotaryEncoder import RotaryEncoder
 from CV import CV
 from NoteSequence import NoteSequence
@@ -52,15 +52,15 @@ class Sequencer:
         self.button1 = gpiozero.Button(5) # physical pin 29
         self.buttonIncrOct = gpiozero.Button(13) #? physical pin 33
         self.buttonDecrOct = gpiozero.Button(16) #? physical pin 36
-        self.buttonHearNote = gpiozero.Button(4000000) # physical pin ?
-        self.buttonShowCV1 = gpiozero.Button(4000000) # physical pin ?
-        self.buttonShowCV2 = gpiozero.Button(4000000) # physical pin ?
-        self.buttonShowCV3 = gpiozero.Button(4000000) # physical pin ?
-        self.buttonShowTempo = gpiozero.Button(4000000) # physical pin ?
-        self.buttonShowGate = gpiozero.Button(4000000) # physical pin ?
+        #* self.buttonHearNote = gpiozero.Button(4000000) # physical pin ?
+        #* self.buttonShowCV1 = gpiozero.Button(4000000) # physical pin ?
+        #* self.buttonShowCV2 = gpiozero.Button(4000000) # physical pin ?
+        #* self.buttonShowCV3 = gpiozero.Button(4000000) # physical pin ?
+        #* self.buttonShowTempo = gpiozero.Button(4000000) # physical pin ?
+        #* self.buttonShowGate = gpiozero.Button(4000000) # physical pin ?
         #? TODO add more buttons 
 
-        self.rotorPitch = RotaryEncoder(4, 14,"pitch") # ?
+        #* self.rotorPitch = RotaryEncoder(4, 14,"pitch") # ?
         self.rotorTempo = RotaryEncoder(17, 27, "tempo") # physical pin 11 and 13
         self.rotorGate = RotaryEncoder(4, 14, "gate/env") # physical pin 7 and 8
         self.rotorCV1 = RotaryEncoder(15, 18, "cv", 1) # physical pin 10 and 12
@@ -68,14 +68,15 @@ class Sequencer:
         self.rotorCV3 = RotaryEncoder(24, 25, "cv", 3) # physical pin 18 and 22
         # ? self.rotorStep = RotaryEncoder(,,"step",) #
 
-        self.dac1 = Simulatedac(0, 0, 7) # could be a MCP4921, physical pin 29
-        self.dac2 = Simulatedac(0, 0, 8) # physical pin 26
-        self.dac3 = Simulatedac(0, 0, 9) # physical pin 24
+        self.dac1 = Simulatedac(0, 0, 7, 1) # could be a MCP4921, physical pin 29
+        self.dac2 = Simulatedac(0, 0, 8, 2) # physical pin 26
+        self.dac3 = Simulatedac(0, 0, 9, 3) # physical pin 24
         '''
         self.dac1 = DACSequencer(0, 0, 7) # could be a MCP4921, physical pin 29
         self.dac2 = DACSequencer(0, 0, 8) # physical pin 26
         self.dac3 = DACSequencer(0, 0, 9) # physical pin 24
         '''
+        self.dacs = [self.dac1,self.dac2,self.dac3]
 
         self.cv1 = CV(1, self.dac2, 1) #? CV1_CHANNEL 
         self.cv2 = CV(2, self.dac3, 0) #? CV2_CHANNEL 

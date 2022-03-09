@@ -2,7 +2,9 @@
 TRANH201INFO3 sequencer test code
 """
 
-# import gpiozero
+#* import gpiozero
+from gpiozero import Device #*
+from gpiozero.pins.mock import MockFactory #*
 import time
 
 # from Step import Step #Step class
@@ -19,12 +21,21 @@ from Gate import Gate
 
 def main(): # Main function, activated when sequencer launched
 
+    # ! -------------------
+    # ! here below is for setting the pins from gpiozero as fake pins for testing purposes
+    #gpiozero.Device.pin_factory = gpiozero.pins.mock.MockFactory()
+    Device.pin_factory = MockFactory()
+    # ! -------------------
+    global sequencer
     sequencer = Sequencer()
+    global lcd
     lcd = Simulatelcd()
     #lcd = LCDSequencer()
     lcd.toggleBacklight(True)
 
+    global tempo
     tempo = Tempo(60, lcd) # initial tempo is 60 bpm
+    global gate
     gate = Gate(sequencer.dac2, 0, lcd)
 
     '''
@@ -46,10 +57,10 @@ def main(): # Main function, activated when sequencer launched
     #sequencer.button1.when_pressed = ?.on # TODO
     sequencer.buttonIncrOct.when_pressed = sequencer.noteSequence.increaseOctave #?
     sequencer.buttonDecrOct.when_pressed = sequencer.noteSequence.decreaseOctave #?
-    sequencer.buttonHearNote.when_pressed = sequencer.playNote
+    #* sequencer.buttonHearNote.when_pressed = sequencer.playNote
 
-    sequencer.rotorPitch.when_rotated_clockwise = sequencer.noteSequence.increasePitch
-    sequencer.rotorPitch.when_rotated_counter_clockwise = sequencer.noteSequence.decreasePitch
+    #* sequencer.rotorPitch.when_rotated_clockwise = sequencer.noteSequence.increasePitch
+    #* sequencer.rotorPitch.when_rotated_counter_clockwise = sequencer.noteSequence.decreasePitch
     sequencer.rotorTempo.when_rotated_clockwise = tempo.increaseTempo
     sequencer.rotorTempo.when_rotated_counter_clockwise = tempo.decreaseTempo
     sequencer.rotorGate.when_rotated_clockwise = gate.increaseGate # TODO
@@ -60,6 +71,11 @@ def main(): # Main function, activated when sequencer launched
     sequencer.rotorCV2.when_rotated_counter_clockwise = sequencer.cv2.decreaseCV
     sequencer.rotorCV3.when_rotated_clockwise = sequencer.cv3.increaseCV
     sequencer.rotorCV3.when_rotated_counter_clockwise = sequencer.cv3.decreaseCV
+
+    for i in range(5):
+        time.sleep(1)
+        print("TEST")
+    raise SystemExit
 
     # sequence led, sequence gate send following tempo
 
@@ -75,24 +91,27 @@ def main(): # Main function, activated when sequencer launched
 
 def endSequencer():
     # Set the DACs to 0V and turns the LCD backlight off (executed when keyboard interrupt or other)
-    sequencer = Sequencer() # ?
-    lcd = Simulatelcd() # ?
-    for i in range(2):
-        sequencer.dac1.setVoltage(i, 0)
-        sequencer.dac2.setVoltage(i, 0)
-        sequencer.dac3.setVoltage(i, 0)
+    global sequencer
+    global lcd
+    for dac in sequencer.dacs:
+        for i in range(2):
+            dac.output.setVoltage(i, 0)
+            print("---DAC", dac.number,"channel",i,"set to 0---")
     lcd.toggleBacklight(False)
-    print("Sequencer ended")
+    # print("LCD Backlight turned OFF")
+    print("==========Sequencer ended==========")
 
 
 if __name__ == "__main__":
     # launch main() if this file is launched (SequencerMain.py)
     try:
         main()
-    except (KeyboardInterrupt, SystemExit):  # catches a keyboard interrupt or a raised system exit (raise KeyboardInterrupt OR raise SystemExit("_Ending program_") OR sys.exit("_Ending program_"))
-        print("----------\nKeyboard Interrupt or System Exit, stopping sequencer\n----------")
+    except (KeyboardInterrupt, SystemExit) as error:  # catches a keyboard interrupt or a raised system exit (raise KeyboardInterrupt OR raise SystemExit("_Ending program_") OR sys.exit("_Ending program_"))
+        print("\/\/\/\/\/\/\/\/\/\/\/\/\/\/\n"+error.__class__.__name__ +
+              ", stopping sequencer\n\/\/\/\/\/\/\/\/\/\/\/\/\/\/")
         #endSequencer() # stops the sequencer
     finally:
+        print("========Ending Sequencer========")
         endSequencer() # stops the sequencer
 
 

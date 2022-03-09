@@ -103,6 +103,7 @@ class LCDSequencer: # must initiate in main file: lcd = LCDSequencer()
 
     def toggleBacklight(self, boolean):
         self.lcd.backlight_enabled = boolean
+        print("LCD Backlight:",str(boolean))
 
 
 
