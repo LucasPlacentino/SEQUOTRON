@@ -11,6 +11,8 @@ from Simulatedac import Simulatedac # ?
 from RotaryEncoder import RotaryEncoder
 from CV import CV
 from NoteSequence import NoteSequence
+import pcf8574_io
+from InputSequencer import InputSequencer
 
 from Env import MAX_STEP, MIN_STEP, MAX_TEMPO, MIN_TEMPO, MAX_OCTAVE, MIN_OCTAVE, MAX_PITCH, MIN_PITCH, MAX_CV,MIN_CV, MAX_DAC, LED_QUANTITY, PITCH_CHANNEL, CV1_CHANNEL, CV2_CHANNEL, CV3_CHANNEL, GATE_CHANNEL, NB_NOTES, NB_STEPS
 '''
@@ -46,6 +48,10 @@ class Sequencer:
     def __init__(self):
 
         # ? self.lcd = LCDSequencer()
+        self.portExpander = pcf8574_io.PCF(0x20) # ! set the correct I2C adress of the PCF8574
+        self.pinPortExpander = ["p0","p1","p2","p3","p4","p5","p6","p7"]
+        for i in self.pinPortExpander:
+            self.portExpander.pin_mode(i,"INPUT") # sets all pins of the PCF8574 as INPUTs
 
         self.noteSequence = NoteSequence(LCD)
 
@@ -87,9 +93,11 @@ class Sequencer:
         self.switchClock = gpiozero.InputDevice(19) # set pin for the switch1 HIGH - physical pin 35
         self.switchPause = gpiozero.InputDevice(20) # set pin for the switch2 HIGH - physical pin 38
         #* then use switchExample.is_active (True if HIGH or False if LOW)
-
         #TODO add input jacks 
-            #! convert them to 3.3v
+            #! convert them to 3.3v - voltage divider or via the Logic LEvel Shifter ?
+        # ? self.jackInputClock = InputSequencer(self.portExpander,self.pinPortExpander[0])
+        # ? self.jackInputPlay = InputSequencer(self.portExpander,self.pinPortExpander[1])
+        # actually is switchPause and switchClock (they're physically connected together so the jacks act like the switches do)
 
     def showCV1(self): # shows this CV value when button is pressed
         LCD.displayCV(1,self.cv1.value)
