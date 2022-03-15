@@ -7,6 +7,9 @@ class RotaryEncoder:
         self.outputCVNumber = outputCVNumber
         self.rotor = gpiozero.RotaryEncoder(pin1, pin2)
 
+
+
+
     '''
     def modifyTempo(self):
         if self.type == "tempo":

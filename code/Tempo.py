@@ -1,4 +1,5 @@
-from Sequencer import MAX_TEMPO, MIN_TEMPO #? , LCD
+#from Sequencer import MAX_TEMPO, MIN_TEMPO #? , LCD
+from Env import MAX_TEMPO, MIN_TEMPO #*
 # ? import Sequencer
 
 

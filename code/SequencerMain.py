@@ -2,13 +2,14 @@
 TRANH201INFO3 sequencer test code
 """
 
-#* import gpiozero
+#* import gpiozero # ?
 from gpiozero import Device #*
 from gpiozero.pins.mock import MockFactory #*
 import time
+import sys
 
 # from Step import Step #Step class
-# from LCDSequencer import LCDSequencer #LCD class
+from LCDSequencer import LCDSequencer #LCD class
 from Simulatelcd import Simulatelcd #Simulated LCD class, for testing purposes and/or when not running on a RPi
 # from DACSequencer import DACSequencer #DAC class
 # from RotaryEncoder import RotaryEncoder #Rotary encoder class
@@ -17,6 +18,7 @@ from Simulatelcd import Simulatelcd #Simulated LCD class, for testing purposes a
 from Sequencer import Sequencer
 from Tempo import Tempo
 from Gate import Gate
+from Env import SIMULATED_LCD, SIMULATED_DAC
 
 
 def main(): # Main function, activated when sequencer launched
@@ -30,14 +32,24 @@ def main(): # Main function, activated when sequencer launched
     global sequencer
     sequencer = Sequencer()
     global lcd
-    lcd = Simulatelcd()
-    #lcd = LCDSequencer()
+    if SIMULATED_LCD:
+        lcd = Simulatelcd()
+    else:
+        lcd = LCDSequencer()
     lcd.toggleBacklight(True)
+    #lcd.test()
 
     global tempo
     tempo = Tempo(60, lcd) # initial tempo is 60 bpm
     global gate
     gate = Gate(sequencer.dac2, 0, lcd)
+
+    #init_tempo = tempo.value
+    #lcd.displayTempo(init_tempo)
+    init_step = sequencer.noteSequence.step
+    init_pitch = sequencer.noteSequence.note[sequencer.noteSequence.listSteps[sequencer.noteSequence.step][1]]
+    init_octave = sequencer.noteSequence.listSteps[sequencer.noteSequence.step][0]
+    lcd.displayStep(init_step, init_pitch, init_octave)
 
     '''
     note = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"]
@@ -55,28 +67,32 @@ def main(): # Main function, activated when sequencer launched
     sequencer.buttonDecrOct.when_pressed = decrease_pitch # TODO ?
     '''
     
-    #sequencer.button1.when_pressed = ?.on # TODO
+    #* sequencer.button1.when_pressed = ?.on # TODO
     sequencer.buttonIncrOct.when_pressed = sequencer.noteSequence.increaseOctave #?
     sequencer.buttonDecrOct.when_pressed = sequencer.noteSequence.decreaseOctave #?
     #* sequencer.buttonHearNote.when_pressed = sequencer.playNote
 
-    #* sequencer.rotorPitch.when_rotated_clockwise = sequencer.noteSequence.increasePitch
-    #* sequencer.rotorPitch.when_rotated_counter_clockwise = sequencer.noteSequence.decreasePitch
+    sequencer.rotorPitch.when_rotated_clockwise = sequencer.noteSequence.increasePitch
+    sequencer.rotorPitch.when_rotated_counter_clockwise = sequencer.noteSequence.decreasePitch
     sequencer.rotorTempo.when_rotated_clockwise = tempo.increaseTempo
     sequencer.rotorTempo.when_rotated_counter_clockwise = tempo.decreaseTempo
-    sequencer.rotorGate.when_rotated_clockwise = gate.increaseGate # TODO
-    sequencer.rotorGate.when_rotated_counter_clockwise = gate.decreaseGate # TODO
+    #* sequencer.rotorGate.when_rotated_clockwise = gate.increaseGate # TODO
+    #* sequencer.rotorGate.when_rotated_counter_clockwise = gate.decreaseGate # TODO
     sequencer.rotorCV1.when_rotated_clockwise = sequencer.cv1.increaseCV
     sequencer.rotorCV1.when_rotated_counter_clockwise = sequencer.cv1.decreaseCV
     sequencer.rotorCV2.when_rotated_clockwise = sequencer.cv2.increaseCV
     sequencer.rotorCV2.when_rotated_counter_clockwise = sequencer.cv2.decreaseCV
     sequencer.rotorCV3.when_rotated_clockwise = sequencer.cv3.increaseCV
     sequencer.rotorCV3.when_rotated_counter_clockwise = sequencer.cv3.decreaseCV
+    sequencer.rotorStep.when_rotated_clockwise = sequencer.noteSequence.increaseStep
+    sequencer.rotorStep.when_rotated_counter_clockwise = sequencer.noteSequence.decreaseStep
 
+    '''
     for i in range(5):
         time.sleep(1)
         print("TEST")
     raise SystemExit
+    '''
 
     # sequence led, sequence gate send following tempo
 
@@ -88,6 +104,9 @@ def main(): # Main function, activated when sequencer launched
             sequencer.dac1.setVoltage(0, pitchDAC)
             time.sleep(60/tempo.value)
     '''
+    while True: # works at the same time as the rotary encoders are turning and changing values
+        print("testing")
+        time.sleep(3)
 
 
 def endSequencer():
@@ -114,5 +133,6 @@ if __name__ == "__main__":
     finally:
         print("========Ending Sequencer========")
         endSequencer() # stops the sequencer
+        sys.exit(0)
 
 

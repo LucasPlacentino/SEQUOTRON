@@ -1,20 +1,20 @@
 # Sequencer Class
-#from DACSequencer import DACSequencer
+from DACSequencer import DACSequencer # !
 import gpiozero
 #? import time
-#! from LCDSequencer import LCDSequencer
-from Simulatelcd import Simulatelcd
+from LCDSequencer import LCDSequencer # !
+from Simulatelcd import Simulatelcd # ?
 from Simulatedac import Simulatedac # ? 
 #? import spidev
 #? from signal import pause
-#? from MCP4922 import MCP4922
+from MCP4922 import MCP4922 # ?
 from RotaryEncoder import RotaryEncoder
 from CV import CV
 from NoteSequence import NoteSequence
 #! import pcf8574_io
 from InputSequencer import InputSequencer
 
-from Env import MAX_STEP, MIN_STEP, MAX_TEMPO, MIN_TEMPO, MAX_OCTAVE, MIN_OCTAVE, MAX_PITCH, MIN_PITCH, MAX_CV,MIN_CV, MAX_DAC, LED_QUANTITY, PITCH_CHANNEL, CV1_CHANNEL, CV2_CHANNEL, CV3_CHANNEL, GATE_CHANNEL, NB_NOTES, NB_STEPS
+from Env import SIMULATED_LCD, SIMULATED_DAC, MAX_STEP, MIN_STEP, MAX_TEMPO, MIN_TEMPO, MAX_OCTAVE, MIN_OCTAVE, MAX_PITCH, MIN_PITCH, MAX_CV,MIN_CV, MAX_DAC, LED_QUANTITY, PITCH_CHANNEL, CV1_CHANNEL, CV2_CHANNEL, CV3_CHANNEL, GATE_CHANNEL, NB_NOTES, NB_STEPS
 '''
 MAX_STEP = 7
 MIN_STEP = 0
@@ -28,8 +28,11 @@ MAX_CV = 25
 MAX_DAC = 4095
 LED_QUANTITY = 8
 '''
-#LCD = LCDSequencer() # ? or in SequencerMain
-LCD = Simulatelcd()  # ? or in SequencerMain
+if SIMULATED_LCD:
+    LCD = Simulatelcd()  # ? or in SequencerMain
+else:
+    LCD = LCDSequencer() # ? or in SequencerMain
+
 class Sequencer:
 
     '''
@@ -57,33 +60,36 @@ class Sequencer:
 
         self.noteSequence = NoteSequence(LCD)
 
+        LCD.displayNote(self.noteSequence.listSteps[self.noteSequence.step][0], self.noteSequence.listSteps[self.noteSequence.step][1])
+
         self.button1 = gpiozero.Button(5) # physical pin 29
         self.buttonIncrOct = gpiozero.Button(13) #? physical pin 33
         self.buttonDecrOct = gpiozero.Button(16) #? physical pin 36
-        #* self.buttonHearNote = gpiozero.Button(4000000) # physical pin ?
-        #* self.buttonShowCV1 = gpiozero.Button(4000000) # physical pin ?
-        #* self.buttonShowCV2 = gpiozero.Button(4000000) # physical pin ?
-        #* self.buttonShowCV3 = gpiozero.Button(4000000) # physical pin ?
-        #* self.buttonShowTempo = gpiozero.Button(4000000) # physical pin ?
-        #* self.buttonShowGate = gpiozero.Button(4000000) # physical pin ?
+        #* self.buttonHearNote = gpiozero.Button(4000000) # physical pin ? (step RotaryEncoder button)
+        #* self.buttonShowCV1 = gpiozero.Button(4000000) # physical pin ? (CV1 RE button)
+        #* self.buttonShowCV2 = gpiozero.Button(4000000) # physical pin ? (CV2 RE button)
+        #* self.buttonShowCV3 = gpiozero.Button(4000000) # physical pin ? (CV3 RE button)
+        #* self.buttonShowTempo = gpiozero.Button(4000000) # physical pin ? (tempo RE button)
+        #* self.buttonShowGate = gpiozero.Button(4000000) # physical pin ? (gate RE button)
         #? TODO add more buttons 
 
-        #* self.rotorPitch = RotaryEncoder(4, 14,"pitch") # ?
+        self.rotorPitch = RotaryEncoder(4, 14,"pitch") # ?
         self.rotorTempo = RotaryEncoder(17, 27, "tempo") # physical pin 11 and 13
-        self.rotorGate = RotaryEncoder(4, 14, "gate/env") # physical pin 7 and 8
+        #* self.rotorGate = RotaryEncoder(4, 14, "gate/env") # physical pin 7 and 8
         self.rotorCV1 = RotaryEncoder(15, 18, "cv", 1) # physical pin 10 and 12
         self.rotorCV2 = RotaryEncoder(22, 23, "cv", 2) # physcial pin 15 and 16
         self.rotorCV3 = RotaryEncoder(24, 25, "cv", 3) # physical pin 18 and 22
-        # ? self.rotorStep = RotaryEncoder(,,"step",) #
+        #! self.rotorStep = RotaryEncoder(,,"step",) # physical pin ?
 
-        self.dac1 = Simulatedac(0, 0, 7, 1) # could be a MCP4921, physical pin 29
-        self.dac2 = Simulatedac(0, 0, 8, 2) # physical pin 26
-        self.dac3 = Simulatedac(0, 0, 9, 3) # physical pin 24
-        '''
-        self.dac1 = DACSequencer(0, 0, 7) # could be a MCP4921, physical pin 29
-        self.dac2 = DACSequencer(0, 0, 8) # physical pin 26
-        self.dac3 = DACSequencer(0, 0, 9) # physical pin 24
-        '''
+
+        if SIMULATED_DAC:
+            self.dac1 = Simulatedac(0, 0, 7) # could be a MCP4921, physical pin 29
+            self.dac2 = Simulatedac(0, 0, 8) # physical pin 26
+            self.dac3 = Simulatedac(0, 0, 9) # physical pin 24
+        else:
+            self.dac1 = DACSequencer(0, 0, 7) # could be a MCP4921, physical pin 29
+            self.dac2 = DACSequencer(0, 0, 8) # physical pin 26
+            self.dac3 = DACSequencer(0, 0, 9) # physical pin 24
         self.dacs = [self.dac1,self.dac2,self.dac3]
 
         self.cv1 = CV(1, self.dac2, 1) #? CV1_CHANNEL 

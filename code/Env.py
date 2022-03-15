@@ -1,6 +1,12 @@
 
 # * Global variables:
 
+# Simulated DAC
+SIMULATED_DAC = False
+
+# Simulated LCD
+SIMULATED_LCD = False
+
 # PITCH
 MAX_PITCH = 12
 MIN_PITCH = 1

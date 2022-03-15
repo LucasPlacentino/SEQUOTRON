@@ -1,7 +1,7 @@
 #from Sequencer import MIN_STEP, MAX_STEP
 from Env import MAX_STEP, MIN_STEP
 
-class Step: # ! NECESSARY ? NO?
+class Step: # ! NOT NECESSARY ANYMORE, SEE NoteSequence.py
 
     def __init__(self, nbstep=MAX_STEP+1, pitch=3, octave=3):
 

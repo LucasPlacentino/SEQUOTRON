@@ -24,3 +24,4 @@ class MCP4922Simulated():
         print("DAC", self.number,"ce:", self.ce, ", channel:", channel, ", value:", str(value)+"(/4095)")
         voltage = 5*(value/4095)
         print("(Voltage equivalent:",str(round(voltage,3))+"V)")
+
