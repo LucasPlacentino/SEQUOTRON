@@ -11,7 +11,7 @@ from Simulatedac import Simulatedac # ?
 from RotaryEncoder import RotaryEncoder
 from CV import CV
 from NoteSequence import NoteSequence
-import pcf8574_io
+#! import pcf8574_io
 from InputSequencer import InputSequencer
 
 from Env import MAX_STEP, MIN_STEP, MAX_TEMPO, MIN_TEMPO, MAX_OCTAVE, MIN_OCTAVE, MAX_PITCH, MIN_PITCH, MAX_CV,MIN_CV, MAX_DAC, LED_QUANTITY, PITCH_CHANNEL, CV1_CHANNEL, CV2_CHANNEL, CV3_CHANNEL, GATE_CHANNEL, NB_NOTES, NB_STEPS
@@ -48,10 +48,12 @@ class Sequencer:
     def __init__(self):
 
         # ? self.lcd = LCDSequencer()
+        ''' # !
         self.portExpander = pcf8574_io.PCF(0x20) # ! set the correct I2C adress of the PCF8574
         self.pinPortExpander = ["p0","p1","p2","p3","p4","p5","p6","p7"]
         for i in self.pinPortExpander:
             self.portExpander.pin_mode(i,"INPUT") # sets all pins of the PCF8574 as INPUTs
+        '''
 
         self.noteSequence = NoteSequence(LCD)
 

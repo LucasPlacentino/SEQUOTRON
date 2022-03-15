@@ -25,6 +25,7 @@ def main(): # Main function, activated when sequencer launched
     # ! here below is for setting the pins from gpiozero as fake pins for testing purposes
     #gpiozero.Device.pin_factory = gpiozero.pins.mock.MockFactory()
     Device.pin_factory = MockFactory()
+    print("------!-------MOCK PINS------!-------")
     # ! -------------------
     global sequencer
     sequencer = Sequencer()
