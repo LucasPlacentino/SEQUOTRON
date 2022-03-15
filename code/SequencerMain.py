@@ -7,9 +7,10 @@ from gpiozero import Device #*
 from gpiozero.pins.mock import MockFactory #*
 import time
 import sys
+import threading
 
 # from Step import Step #Step class
-from LCDSequencer import LCDSequencer #LCD class
+#from LCDSequencer import LCDSequencer #LCD class
 from Simulatelcd import Simulatelcd #Simulated LCD class, for testing purposes and/or when not running on a RPi
 # from DACSequencer import DACSequencer #DAC class
 # from RotaryEncoder import RotaryEncoder #Rotary encoder class
@@ -35,7 +36,8 @@ def main(): # Main function, activated when sequencer launched
     if SIMULATED_LCD:
         lcd = Simulatelcd()
     else:
-        lcd = LCDSequencer()
+        #lcd = LCDSequencer()
+        print("uevbu")
     lcd.toggleBacklight(True)
     #lcd.test()
 
@@ -67,7 +69,9 @@ def main(): # Main function, activated when sequencer launched
     sequencer.buttonDecrOct.when_pressed = decrease_pitch # TODO ?
     '''
     
-    #* sequencer.button1.when_pressed = ?.on # TODO
+    sequencer.buttonDecrOct.when_pressed = lcd.test #?
+
+    sequencer.button1.when_pressed = on # TODO
     sequencer.buttonIncrOct.when_pressed = sequencer.noteSequence.increaseOctave #?
     sequencer.buttonDecrOct.when_pressed = sequencer.noteSequence.decreaseOctave #?
     #* sequencer.buttonHearNote.when_pressed = sequencer.playNote
@@ -89,10 +93,18 @@ def main(): # Main function, activated when sequencer launched
 
     '''
     for i in range(5):
-        time.sleep(1)
+        time.sleep(10)
         print("TEST")
-    raise SystemExit
+    #raise SystemExit
+
+    a = True
+    while a == True:
+        gate.sendGateSignal
+        sleep((60/tempo.value)*gate.value)
+        gate.stop
+        sleep((60/tempo.value)*(1-gate.value))
     '''
+    
 
     # sequence led, sequence gate send following tempo
 
@@ -106,8 +118,41 @@ def main(): # Main function, activated when sequencer launched
     '''
     while True: # works at the same time as the rotary encoders are turning and changing values
         print("testing")
-        time.sleep(3)
+        time.sleep(5)
+        on()
 
+def setvoltage():
+    #dac3.setVoltage(1, 12*l_step[tempo.n][0] + l_step[tempo.n][1])
+    print("GATE ON TEST")
+    #dac3.setVoltage(1, 0)
+    print(tempo.step)
+
+def off():
+    tempo.on = "off"
+
+def setvoltage2():
+    print("TEST GATE dac ON")
+    time.sleep((60/tempo.value)*(gate.value))
+    print("TEST GATE dac OFF")
+    time.sleep((60/tempo.value)*(1-gate.value))
+
+def on():
+    tempo.on = "on"
+    while tempo.on == "on":
+        t1 = threading.Timer((60/tempo.value)*(1-gate.value), setvoltage)
+        t1.run()
+        time.sleep((60/tempo.value)*(gate.value))
+        t2 = threading.Thread(setvoltage2)
+        t2.run()
+        #dac3.setVoltage(1, 0)
+        print("Set Voltage test")
+        tempo.step += 1
+        tempo.step = tempo.step%8
+        time.sleep(15)#!!!
+        off()
+        if sequencer.button1.is_pressed == False:
+            off()
+        #button1.when_released = off
 
 def endSequencer():
     # Set the DACs to 0V and turns the LCD backlight off (executed when keyboard interrupt or other)

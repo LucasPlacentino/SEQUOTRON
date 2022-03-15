@@ -11,6 +11,8 @@ class Tempo:
     def __init__(self, initalTempo, lcd):
         self.value = initalTempo
         self.lcd = lcd
+        self.step = 0
+        self.on = ""
 
     def increaseTempo(self):
         if self.value < MAX_TEMPO :

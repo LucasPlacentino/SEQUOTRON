@@ -248,10 +248,6 @@ def write_sequences(l, file):
     with open(file, 'w', encoding='utf-8') as f:
         for i in range(len(l)):
             f.write(l[i][0] + ' ' + l[i][1] + '\n')
-
-def gate():
-    #dac3.setVoltage(1, 0)
-    print()
     
 def setvoltage():
     #dac3.setVoltage(1, 12*l_step[tempo.n][0] + l_step[tempo.n][1])
@@ -264,8 +260,10 @@ def off():
 def on():
     tempo.on = "on"
     while tempo.on == "on":
-        threading.Timer(60/tempo.value, setvoltage).run()
-        threading.Timer(60/tempo.value, gate).run()
+        t1 = threading.Timer((60/tempo.value)*CV.Gate, setvoltage)
+        t1.run()
+        time.sleep((60/tempo.value)*(1-CV.Gate))
+        dac3.setVoltage(1, 0)
         #time.sleep(60/tempo.value)
         tempo.n += 1
         tempo.n = tempo.n%8
