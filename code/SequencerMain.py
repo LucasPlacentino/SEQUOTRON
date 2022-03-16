@@ -69,7 +69,7 @@ def main(): # Main function, activated when sequencer launched
     sequencer.buttonDecrOct.when_pressed = decrease_pitch # TODO ?
     '''
     
-    sequencer.buttonDecrOct.when_pressed = lcd.test #?
+    #sequencer.buttonDecrOct.when_pressed = lcd.test #?
 
     sequencer.button1.when_pressed = on # TODO
     sequencer.buttonIncrOct.when_pressed = sequencer.noteSequence.increaseOctave #?
@@ -80,8 +80,8 @@ def main(): # Main function, activated when sequencer launched
     sequencer.rotorPitch.when_rotated_counter_clockwise = sequencer.noteSequence.decreasePitch
     sequencer.rotorTempo.when_rotated_clockwise = tempo.increaseTempo
     sequencer.rotorTempo.when_rotated_counter_clockwise = tempo.decreaseTempo
-    #* sequencer.rotorGate.when_rotated_clockwise = gate.increaseGate # TODO
-    #* sequencer.rotorGate.when_rotated_counter_clockwise = gate.decreaseGate # TODO
+    #* sequencer.rotorGate.when_rotated_clockwise = gate.increaseGate # ! makes the script end when uncommented?
+    #* sequencer.rotorGate.when_rotated_counter_clockwise = gate.decreaseGate # ! makes the script end when uncommented?
     sequencer.rotorCV1.when_rotated_clockwise = sequencer.cv1.increaseCV
     sequencer.rotorCV1.when_rotated_counter_clockwise = sequencer.cv1.decreaseCV
     sequencer.rotorCV2.when_rotated_clockwise = sequencer.cv2.increaseCV
@@ -119,26 +119,28 @@ def main(): # Main function, activated when sequencer launched
     while True: # works at the same time as the rotary encoders are turning and changing values
         print("testing")
         time.sleep(5)
-        on()
+        #on()
 
-def setvoltage():
+def setvoltage(): # for testing purposes
     #dac3.setVoltage(1, 12*l_step[tempo.n][0] + l_step[tempo.n][1])
     print("GATE ON TEST")
     #dac3.setVoltage(1, 0)
     print(tempo.step)
 
-def off():
+def off(): # pauses the sequence
     tempo.on = "off"
 
-def setvoltage2():
+
+def setvoltage2():  # for testing purposes
     print("TEST GATE dac ON")
     time.sleep((60/tempo.value)*(gate.value))
     print("TEST GATE dac OFF")
     time.sleep((60/tempo.value)*(1-gate.value))
 
-def on():
+def on(): # plays the sequence
     tempo.on = "on"
-    while tempo.on == "on":
+    #* while sequencer.button1.is_pressed: # ?
+    while tempo.on == "on": # Clock of sequencer: # TODO
         t1 = threading.Timer((60/tempo.value)*(1-gate.value), setvoltage)
         t1.run()
         time.sleep((60/tempo.value)*(gate.value))
@@ -162,6 +164,7 @@ def endSequencer():
         for i in range(2):
             dac.output.setVoltage(i, 0)
             print("---DAC", dac.number,"channel",i,"set to 0---")
+    lcd.fullClearLCD()
     lcd.toggleBacklight(False)
     # print("LCD Backlight turned OFF")
     print("==========Sequencer ended==========")
