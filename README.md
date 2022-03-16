@@ -1,4 +1,4 @@
-# ***\*WIP\**** Modular Synth Sequencer
+# SEQUOTRON - Modular Synth Sequencer
 
 ### Table of contents
 
@@ -60,7 +60,7 @@
 
 ## Authors and contributors
 - [Lucas Placentino](https://github.com/lucasplacentino)
-- Felix Rosso
+- [Felix Rosso](https://github.com/felixlebg)
 - [Kamil Pietrasz](https://github.com/NexieSlowo)
 - Robin Afuera
 
