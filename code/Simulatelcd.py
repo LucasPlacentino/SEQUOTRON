@@ -1,9 +1,10 @@
+'''
+#! FOR TESTING PURPOSES ONLY
+Simulated LCD, to use when running the program outside of a RPi, or without an LCD plugged in
+'''
+
 class Simulatelcd:
-    ''' # !
-    FOR TESTING PURPOSES ONLY
-    Simulated LCD, to use when running the program outside of a RPi, it will just print out rather than display on the LCD
-    that way you don't get the RPLC or smbus or i2c libraries errors
-    ''' # !
+    
     def __init_(self):
         self.testvar = 0
     
@@ -22,3 +23,5 @@ class Simulatelcd:
 
     def toggleBacklight(self, boolean):
         print("LCD Backlight: " + str(boolean))
+
+    #TODO rest of LCDSequencer functions

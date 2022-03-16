@@ -2,6 +2,10 @@ from Sequencer import LED_QUANTITY
 from gpiozero import LED
 import pcf8574_io
 from time import sleep # ?
+
+
+# ! NEED TO UPDATE
+
 class LEDSequence: # TODO
 
     def __init__(self): # TODO

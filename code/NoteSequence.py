@@ -1,16 +1,7 @@
-#from Sequencer import MAX_PITCH, MAX_OCTAVE, MAX_STEP, MIN_STEP, MIN_OCTAVE, MIN_PITCH
-from Env import NB_STEPS, MAX_PITCH, MAX_OCTAVE, MAX_STEP, MIN_STEP, MIN_OCTAVE, MIN_PITCH
-'''
-import Env
+# note sequence
 
-MAX_OCTAVE = Env.MAX_OCTAVE
-MIN_OCTAVE = Env.MIN_OCTAVE
-MAX_PITCH = Env.MAX_PITCH
-MIN_PITCH = Env.MIN_PITCH
-MAX_STEP = Env.
-NB_STEPS = Env.NB_STEPS# or from Env import NB_STEPS
-#...
-'''
+from Env import NB_STEPS, MAX_PITCH, MAX_OCTAVE, MAX_STEP, MIN_STEP, MIN_OCTAVE, MIN_PITCH
+
 
 class NoteSequence:
 
@@ -25,9 +16,10 @@ class NoteSequence:
 
     def increaseStep(self):
         self.step = (self.step + 1) % (MAX_STEP+1) # MX_STEP+1 ?
-        print("Step : " + str(self.step))
-        self.lcd.displayStep(self.step, self.note[self.listSteps[self.step][1]],self.listSteps[self.step][0])
-        '''
+        print("Step : " + str(self.step+1)) # +1 because 1->8 not 0->7
+        self.lcd.displayStep((self.step+1), self.note[self.listSteps[self.step][1]],self.listSteps[self.step][0]) # +1 because 1->8 not 0->7
+        
+        ''' # ! REMOVE ?
         if self.step < MAX_STEP:
             self.step += 1
         '''
@@ -38,9 +30,10 @@ class NoteSequence:
         else:
             self.step -= 1
         #self.step = (self.step - 1) % MAX_STEP  # if step = -1 -> 6
-        print("Step : " + str(self.step))
-        self.lcd.displayStep(self.step, self.note[self.listSteps[self.step][1]],self.listSteps[self.step][0])
-        '''
+        print("Step : " + str(self.step+1)) # +1 because 1->8 not 0->7
+        self.lcd.displayStep((self.step+1), self.note[self.listSteps[self.step][1]],self.listSteps[self.step][0]) # +1 because 1->8 not 0->7
+        
+        ''' # ! REMOVE ?
         if self.step > MIN_STEP:
             self.step -= 1
         '''
@@ -49,11 +42,13 @@ class NoteSequence:
         if self.listSteps[self.step][1] == MAX_PITCH:
             self.listSteps[self.step][0] += 1
             self.listSteps[self.step][0] = self.listSteps[self.step][0]%(MAX_OCTAVE + 1)
+            self.listSteps[self.step][1] = MIN_PITCH
+        else:
             self.listSteps[self.step][1] += 1
-        self.listSteps[self.step][1] += 1
-        self.listSteps[self.step][1] = self.listSteps[self.step][1]%(MAX_PITCH + 1)
-        print("pitch increase")
-        self.lcd.displayNote(self.note[self.listSteps[self.step][1]],self.listSteps[self.step][0])
+        print("pitch increase:")
+        print(self.note[self.listSteps[self.step][1]-1],self.listSteps[self.step][0]) # - 1 because list start from 0 and not 1
+        print(self.listSteps[self.step][1]-1) # - 1 because list start from 0 and not 1
+        self.lcd.displayNote(self.note[self.listSteps[self.step][1]-1],self.listSteps[self.step][0]) # - 1 because list start from 0 and not 1
 
     def decreasePitch(self):
         if self.listSteps[self.step][1] == MIN_PITCH:
@@ -64,8 +59,10 @@ class NoteSequence:
                 self.listSteps[self.step][0] -= 1
         else:
             self.listSteps[self.step][1] -= 1
-        print("pitch decrease")
-        self.lcd.displayNote(self.note[self.listSteps[self.step][1]],self.listSteps[self.step][0])
+        print("pitch decrease:")
+        print(self.note[self.listSteps[self.step][1]-1],self.listSteps[self.step][0]) # - 1 because list start from 0 and not 1
+        print(self.listSteps[self.step][1]-1) # - 1 because list start from 0 and not 1
+        self.lcd.displayNote(self.note[self.listSteps[self.step][1]-1],self.listSteps[self.step][0]) # - 1 because list start from 0 and not 1
 
     def increaseOctave(self):
         if self.listSteps[self.step][0] == MAX_OCTAVE:
@@ -82,4 +79,4 @@ class NoteSequence:
             self.listSteps[self.step][0] -= 1
         print("octave decrease")
         self.lcd.displayNote(self.note[self.listSteps[self.step][1]],self.listSteps[self.step][0])
-        # ? self.lcd.toggleBacklight(True) # ?
+

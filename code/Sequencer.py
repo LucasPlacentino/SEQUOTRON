@@ -1,62 +1,51 @@
 # Sequencer Class
-from DACSequencer import DACSequencer # !
+
+from DACSequencer import DACSequencer #* critical
 import gpiozero
 #? import time
-from LCDSequencer import LCDSequencer # !
-from Simulatelcd import Simulatelcd # ?
-from Simulatedac import Simulatedac # ? 
+from LCDSequencer import LCDSequencer #* critical
+from Simulatelcd import Simulatelcd #* for testing only
+from Simulatedac import Simulatedac #* for testing only
 #? import spidev
 #? from signal import pause
-from MCP4922 import MCP4922 # ?
-from RotaryEncoder import RotaryEncoder
-from CV import CV
-from NoteSequence import NoteSequence
+# ? from MCP4922 import MCP4922 # ?
+from RotaryEncoder import RotaryEncoder #* critical
+from CV import CV #* critical
+from NoteSequence import NoteSequence #* critical
 #! import pcf8574_io
-from InputSequencer import InputSequencer
+# ? from InputSequencer import InputSequencer
 
 from Env import SIMULATED_LCD, SIMULATED_DAC, MAX_STEP, MIN_STEP, MAX_TEMPO, MIN_TEMPO, MAX_OCTAVE, MIN_OCTAVE, MAX_PITCH, MIN_PITCH, MAX_CV,MIN_CV, MAX_DAC, LED_QUANTITY, PITCH_CHANNEL, CV1_CHANNEL, CV2_CHANNEL, CV3_CHANNEL, GATE_CHANNEL, NB_NOTES, NB_STEPS
-'''
-MAX_STEP = 7
-MIN_STEP = 0
-MAX_TEMPO = 359
-MIN_TEMPO = 2
-MAX_OCTAVE = 2 # 4 when 5V, here only 2 because only 3.3V
-MIN_OCTAVE = 0
-MAX_PITCH = 12
-MIN_PITCH = 1
-MAX_CV = 25
-MAX_DAC = 4095
-LED_QUANTITY = 8
-'''
+#* check if all imports from Env.py are necessary
+
+''' # ! NOT WORKING - REMOVE
 if SIMULATED_LCD:
     LCD = Simulatelcd()  # ? or in SequencerMain
 else:
     LCD = LCDSequencer() # ? or in SequencerMain
+'''
+#! uncomment next line if test (line 44-48) is unconclusive
+#LCD = LCDSequencer()
 
 class Sequencer:
-
     '''
-    MAX_STEP = 7
-    MIN_STEP = 0
-    MAX_TEMPO = 359
-    MIN_TEMPO = 2
-    MAX_OCTAVE = 2 # 4 when 5V, here only 2 because only 3.3V
-    MIN_OCTAVE = 0
-    MAX_PITCH = 12
-    MIN_PITCH = 1
-    MAX_CV = 25
-    LCD = LCDSequencer() #? or in SequencerMain
+        #* Sequencer class, every "physical" component is initialized here
     '''
-
     def __init__(self):
 
-        # ? self.lcd = LCDSequencer()
-        ''' # !
+        ''' # ! NEEDED ?!
         self.portExpander = pcf8574_io.PCF(0x20) # ! set the correct I2C adress of the PCF8574
         self.pinPortExpander = ["p0","p1","p2","p3","p4","p5","p6","p7"]
         for i in self.pinPortExpander:
             self.portExpander.pin_mode(i,"INPUT") # sets all pins of the PCF8574 as INPUTs
         '''
+
+        global LCD
+        # ! to test:
+        if SIMULATED_LCD:
+            LCD = Simulatelcd()
+        else:
+            LCD = LCDSequencer()
 
         self.noteSequence = NoteSequence(LCD)
 
@@ -71,16 +60,14 @@ class Sequencer:
         #* self.buttonShowCV3 = gpiozero.Button(4000000) # physical pin ? (CV3 RE button)
         #* self.buttonShowTempo = gpiozero.Button(4000000) # physical pin ? (tempo RE button)
         #* self.buttonShowGate = gpiozero.Button(4000000) # physical pin ? (gate RE button)
-        #? TODO add more buttons 
 
-        self.rotorPitch = RotaryEncoder(4, 14,"pitch") # ?
+        self.rotorPitch = RotaryEncoder(4, 14,"pitch") #! phsical pin ?
         self.rotorTempo = RotaryEncoder(17, 27, "tempo") # physical pin 11 and 13
         #* self.rotorGate = RotaryEncoder(4, 14, "gate/env") # physical pin 7 and 8
         self.rotorCV1 = RotaryEncoder(15, 18, "cv", 1) # physical pin 10 and 12
         self.rotorCV2 = RotaryEncoder(22, 23, "cv", 2) # physcial pin 15 and 16
         self.rotorCV3 = RotaryEncoder(24, 25, "cv", 3) # physical pin 18 and 22
-        #! self.rotorStep = RotaryEncoder(,,"step",) # physical pin ?
-
+        self.rotorStep = RotaryEncoder(21, 26,"step",) #! physical pin ?
 
         if SIMULATED_DAC:
             self.dac1 = Simulatedac(0, 0, 7) # could be a MCP4921, physical pin 29
@@ -92,268 +79,36 @@ class Sequencer:
             self.dac3 = DACSequencer(0, 0, 9) # physical pin 24
         self.dacs = [self.dac1,self.dac2,self.dac3]
 
-        self.cv1 = CV(1, self.dac2, 1) #? CV1_CHANNEL 
-        self.cv2 = CV(2, self.dac3, 0) #? CV2_CHANNEL 
-        self.cv3 = CV(3, self.dac3, 1) #? CV3_CHANNEL 
+        self.cv1 = CV(1, self.dac2, LCD, 1) #? CV1_CHANNEL 
+        self.cv2 = CV(2, self.dac3, LCD, 0) #? CV2_CHANNEL 
+        self.cv3 = CV(3, self.dac3, LCD, 1) #? CV3_CHANNEL 
 
         #TODO add switches
+        #! Play Pause will be coded as a button
         #* OR use a simple Button(pin) and use button.is_pressed (True if HIGH)
-        self.switchClock = gpiozero.InputDevice(19) # set pin for the switch1 HIGH - physical pin 35
-        self.switchPause = gpiozero.InputDevice(20) # set pin for the switch2 HIGH - physical pin 38
-        #* then use switchExample.is_active (True if HIGH or False if LOW)
-        #TODO add input jacks 
-            #! convert them to 3.3v - voltage divider or via the Logic LEvel Shifter ?
+        #? self.switchClock = gpiozero.InputDevice(19) # set pin for the switch1 HIGH - physical pin 35
+        #! self.switchPause = gpiozero.InputDevice(20) # set pin for the switch2 HIGH - physical pin 38
+        # then use switchExample.is_active (True if HIGH or False if LOW)
+         
+        #! convert them to 3.3v - voltage divider or via the Logic Level Shifter ?
         # ? self.jackInputClock = InputSequencer(self.portExpander,self.pinPortExpander[0])
         # ? self.jackInputPlay = InputSequencer(self.portExpander,self.pinPortExpander[1])
-        # actually is switchPause and switchClock (they're physically connected together so the jacks act like the switches do)
+        #! input jacks actually are switchPause and switchClock (they're physically connected together so the jacks act like the switches do)
 
-    def showCV1(self): # shows this CV value when button is pressed
+    def showCV1(self): #TODO # shows this CV value when button is pressed
         LCD.displayCV(1,self.cv1.value)
         print("show CV1:", self.cv1.value)
-    def showCV2(self): # shows this CV value when button is pressed
+    def showCV2(self): #TODO # shows this CV value when button is pressed
         LCD.displayCV(2,self.cv2.value)
         print("show CV2:", self.cv2.value)
-    def showCV3(self): # shows this CV value when button is pressed
+    def showCV3(self): #TODO # shows this CV value when button is pressed
         LCD.displayCV(3,self.cv3.value)
         print("show CV3:", self.cv3.value)
 
-    def playNote(self): # plays the current note (selected current step) when button is pressed
+    def playNote(self): #TODO # plays the current note (selected current step) when button is pressed
         currentOctave = self.noteSequence.listSteps[self.noteSequence.step][0] # octave of the current note
         currentPitch = self.noteSequence.listSteps[self.noteSequence.step][1] # pitch of the current note
         currentNote = MAX_DAC*(((currentOctave*12)+currentPitch)/NB_NOTES)
         self.dac1.setVoltage(PITCH_CHANNEL, int(currentNote))
         print("play current note:",currentPitch,currentOctave,currentNote)
 
-
-
-
-
-
-
-''' #* BELOW IS THE CODE ON THE RPI AT THE END OF Q1 (SequencerSurRPI.py)
-
-button1 = Button(5) #29
-button2 = Button(6) #31
-button3 = Button(12) #32
-
-rotor1 = RotaryEncoder(17, 27) # 11 et 13 (tempo)
-rotor2 = RotaryEncoder(4, 14) # 7 et 8 (gate)
-rotor3 = RotaryEncoder(15, 18) # 10 et 12 (CV1)
-rotor4 = RotaryEncoder(22, 23) # 15 et 16 (CV2)
-rotor5 = RotaryEncoder(24, 25) # 18 et 22 (CV3)
-
-"""
-led1 = LED(27) #13
-led2 = LED(23) #15
-led3 = LED(22) #16
-
-l_led = [led1,led2,led3]
-"""
-
-dac1 = MCP4922(0, 0, 5) #29 (4921 mais ça peut aussi fonctionner en 4922)
-dac2 = MCP4922(0, 0, 7) #26
-dac3 = MCP4922(0, 0, 8) #24
-
-
-note = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"]
-l_step = []
-for i in range(8): #création de la liste des notes
-    l_step.append([0, 1]) #cette liste représente l'octave et la note
-
-
-MAX_STEP = 7
-MIN_STEP = 0
-MAX_TEMPO = 359
-MIN_TEMPO = 2
-MAX_OCTAVE = 4
-MIN_OCTAVE = 0
-MAX_PITCH = 12
-MIN_PITCH = 1
-
-
-class Tempo:
-    valeur = 100
-
-tempo = Tempo()
-
-
-class Step:
-    n = 0 #indice de la liste a modifier
-
-step = Step()
-
-
-class CV:
-    CV1 = 0
-    CV2 = 0
-    CV3 = 0
-    Gate = 1
-    
-CV = CV()
-
-
-def led(n):
-    n.on()
-    time.sleep(60/tempo.valeur)
-    n.off()
-
-
-def led_note():
-    octave = str(l_step[step.n][0])
-    pitch = note[l_step[step.n][1]-1]
-    return "Note : " + pitch + octave
-
-
-def augmenter_step():
-    step.n += 1
-    step.n = step.n%MAX_STEP
-    print("Step : " + str(step.n))
-
-
-def diminuer_step():
-    if step.n == MIN_STEP: # step.pitch
-        step.n = MAX_STEP
-    else:
-        step.n -= 1
-    print("Step : " + str(step.n))
-
-
-def augmenter_pitch():
-    if l_step[step.n][1] == MAX_PITCH:
-        l_step[step.n][0] += 1
-        l_step[step.n][0] = l_step[step.n][0]%MAX_OCTAVE
-    l_step[step.n][1] += 1
-    l_step[step.n][1] = l_step[step.n][1]%MAX_PITCH
-    print(led_note())
-
-
-def diminuer_pitch():
-    if l_step[step.n][1] == MIN_PITCH:
-        l_step[step.n][1] = MAX_PITCH
-        if l_step[step.n][0] == MIN_OCTAVE:
-            l_step[step.n][0] = MAX_OCTAVE
-        else:
-            l_step[step.n][0] -= 1
-    else:
-        l_step[step.n][1] -= 1
-    print(led_note())
-
-
-def augmenter_octave():
-    l_step[step.n][0] += 1
-    l_step[step.n][0] = l_step[step.n][0]%MAX_OCTAVE
-    print(led_note())
-
-
-def diminuer_octave():
-    if l_step[step.n][0] == MIN_OCTAVE:
-        l_step[step.n][0] = MAX_OCTAVE
-    else:
-        l_step[step.n][0] -= 1
-    print(led_note())
-
-
-def augmenter_tempo():
-    if tempo.valeur < MAX_TEMPO:
-        tempo.valeur += 1
-    print(tempo.valeur)
-
-
-def diminuer_tempo():
-    if tempo.valeur > MIN_TEMPO:
-        tempo.valeur -= 1
-    print(tempo.valeur)
-
-
-def augmenter_CV1():
-    CV.CV1 += 1
-    CV.CV1 = CV.CV1%24
-    dac1.setVoltage(0, 4096*CV.CV1/24)
-
-
-def augmenter_CV2():
-    CV.CV2 += 1
-    CV.CV2 = CV.CV2%24
-    dac2.setVoltage(1, 4096*CV.CV2/24)
-
-
-def augmenter_CV3():
-    CV.CV3 += 1
-    CV.CV3 = CV.CV3%24
-    dac3.setVoltage(n, 4096*CV.CV3/24)
-
-
-def diminuer_CV1():
-    if CV.CV1 == 0:
-        CV.CV1 = 24
-    else:
-        CV.CV1 -= 1
-    dac1.setVoltage(0, 4096*CV.CV1/24)
-
-
-def diminuer_CV2():
-    if CV.CV2 == 0:
-        CV.CV2 = 24
-    else:
-        CV.CV2 -= 1
-    dac1.setVoltage(1, 4096*CV.CV2/24)
-
-
-def diminuer_CV3():
-    if CV.CV3 == 0:
-        CV.CV3 = 24
-    else:
-        CV.CV3 -= 1
-    dac2.setVoltage(0, 4096*CV.CV3/24)
-
-
-def augmenter_Gate():
-    if CV.Gate == 1:
-        CV.Gate = 0
-    else:
-        CV.Gate += 0.1
-    dac3.setVoltage(1, 4096*Gate)
-    
-
-def diminuer_Gate():
-    if CV.Gate == 0:
-        CV.Gate = 1
-    else:
-        CV.Gate -= 0.05
-    dac3.setVoltage(1, 4096*Gate)
-
-
-def on():
-    p = 'on'
-    while p == 'on':
-        for i in range(8):
-            dac3.setVoltage(1, 12*l_step[i][0] + l_step[i][1])
-            #led(l_led[i])
-            time.sleep(60/tempo.valeur)
-        if not button1.is_pressed:
-            p = 'off'
-    #if keyboard interrupt:
-        #(led off)
-        #break
-
-# C0 - (B#4) - C5
-
-button1.when_pressed = on
-button2.when_pressed = augmenter_pitch
-button3.when_pressed = diminuer_pitch
-
-rotor1.when_rotated_clockwise = augmenter_tempo
-rotor1.when_rotated_counter_clockwise = diminuer_tempo
-rotor2.when_rotated_clockwise = augmenter_Gate
-rotor2.when_rotated_counter_clockwise = diminuer_Gate
-rotor3.when_rotated_clockwise = augmenter_CV1
-rotor3.when_rotated_counter_clockwise = diminuer_CV1
-rotor4.when_rotated_clockwise = augmenter_CV2
-rotor4.when_rotated_counter_clockwise = diminuer_CV2
-rotor5.when_rotated_clockwise = augmenter_CV3
-rotor5.when_rotated_counter_clockwise = diminuer_CV3
-
-
-pause()
-
-'''

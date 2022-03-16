@@ -1,16 +1,18 @@
+# rotary encoder
+
 import gpiozero
 
 class RotaryEncoder:
     
-    def __init__(self, pin1, pin2, type="tempo", outputCVNumber=0):
-        self.type = type #ie: "tempo", "cv" or "gate/env". Default: "tempo"
-        self.outputCVNumber = outputCVNumber
-        self.rotor = gpiozero.RotaryEncoder(pin1, pin2)
+    def __init__(self, pin1, pin2, type="", outputCVNumber=0):
+        self.type = type #ie: "tempo", "cv" or "gate".
+        self.outputCVNumber = outputCVNumber # if type = "cv"
+        self.rotor = gpiozero.RotaryEncoder(pin1, pin2) # GPIO of the A and B pins of the rotary encoder
 
 
 
 
-    '''
+    ''' # ! REMOVE
     def modifyTempo(self):
         if self.type == "tempo":
             # change tempo, tempo.current_tempo += 1 or -= 1

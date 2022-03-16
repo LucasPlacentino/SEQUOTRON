@@ -1,5 +1,5 @@
-# activer I2C
-# installer smbus
+# activate I2C
+# install smbus
 
 from RPLCD.i2c import CharLCD
 
@@ -10,7 +10,7 @@ class LCDSequencer: # must initiate in main file: lcd = LCDSequencer()
     #dans l'init: lcd = lcd = CharLCD(i2c_expander='PCF8574', address=0x26, cols=16, rows=2, auto_linebreaks=True, backlight_enabled=True)
 
     def __init__(self):
-        '''
+        ''' #! remove
         self.testvar = 0
         
         self.pitch = pitch    # besoin ?
@@ -24,61 +24,59 @@ class LCDSequencer: # must initiate in main file: lcd = LCDSequencer()
         self.lcd.backlight_enabled = True # Turns the backlight ON # ?
 
     def displayTempo(self, tempo):
-        #self.justify('right')
-        #self.write(0, "Tempo:\n" + tempo.toString() +"BPM")
-        #self.write(0, "Tempo: \n$tempoBPM")
-
+        
         self.clearRightLCD()
-        #self.lcd.text_align_mode = "right" # Si fonctionne, changer cursor_pos à (0,0) ? c'est pas une justify à droite mais une écriture de droite à gauche (lettres inversées)
         '''We should calculate the space left in the line and reposition the cursor like 16-length("Tempo:")
         or (PREFERRED) add white spaces before the string and put cursor pos at something like 8 because it will clear any text left on the screen if the previous one was longer'''
         stringTempo = str(tempo)+"BPM"
         cursorPosTempo = 16 - len(stringTempo) # because the LCD is 16 character long
+        
         self.lcd.cursor_pos = (0, 10)
         self.lcd.write_string("Tempo:")
+
         self.lcd.cursor_pos = (1, cursorPosTempo)
         self.lcd.write_string(stringTempo)
 
     def displayNote(self, pitch, octave):
-        #self.justify('left')
-        #self.write(1, pitch.toString() + octave.toString())
-
+        
         self.clearBottomLeftLCD()
+
         self.lcd.cursor_pos = (1, 0)
         self.lcd.write_string(str(pitch) + str(octave))
 
     def displayStep(self, step, pitch, octave):
-        #self.justify('left')
-        #self.write(0, "Step " + step.toString())
-        #self.write("Step $step")
+        
         self.clearTopLeftLCD()
-        #blabla
+
         self.lcd.cursor_pos = (0, 0)
         self.lcd.write_string("Step " + str(step))
 
         self.displayNote(pitch, octave)
 
     def displayCV(self, cvNumber, cvValue):
-        #self.justify('right')
-        #self.write(0, "cv" + cv.number.toString() + ":\n" + cv.value.toString())
+        
         self.clearRightLCD()
         stringCV = str(int(cvValue)) #? +"%" ?
         cursorPosCV = 16 - len(stringCV)
-        self.lcd.cursor_pos = (0, 10)
-        self.lcd.write_string("CV #"+str(cvNumber)+":")
-        self.lcd.cursor_pos = (1, cursorPosCV)
-        self.lcd.write_string(stringCV)
+
+        self.lcd.cursor_pos = (0, 9) #! need to check
+        self.lcd.write_string("..CV#"+str(cvNumber)+":")  # ! need to check
+
+        self.lcd.cursor_pos = (1, cursorPosCV-4)  # ! need to check
+        self.lcd.write_string("...."+stringCV)  # ! need to check
 
     def displayGate(self, gate):
-        #self.justify('right')
+
         self.clearRightLCD()
+
         stringGate = str(int(gate*100))+"%" #? int()
         cursorPosGate = 16 - len(stringGate)
-        self.lcd.cursor_pos = (0, 11)
-        self.lcd.write_string("Gate:")
-        self.lcd.cursor_pos = (1, cursorPosGate)
-        #self.lcd.write_string(str(gate))
-        self.lcd.write_string(stringGate)
+
+        self.lcd.cursor_pos = (0, 11) #! need to check
+        self.lcd.write_string("Gate:") #! need to check
+
+        self.lcd.cursor_pos = (1, cursorPosGate) #! need to check
+        self.lcd.write_string(stringGate)  # ! need to check
         
     def test(self):
         print("test lcd")# + str(self.testvar))

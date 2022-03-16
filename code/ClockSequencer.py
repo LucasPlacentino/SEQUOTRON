@@ -1,3 +1,7 @@
+
+#! NOT NECESSARY
+
+'''
 import time
 import threading
 
@@ -25,11 +29,11 @@ def on():
         tempo.n += 1
         tempo.n = tempo.n%8
         button1.when_released = off
+'''
 
 
 
-
-"""class ClockSequencer:         # TODO 
+"""class ClockSequencer:
 
     def __init__(self):
         self.internal = True

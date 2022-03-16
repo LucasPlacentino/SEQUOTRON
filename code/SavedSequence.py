@@ -1,6 +1,7 @@
-# translated to EN
+# Saves a sequence or loads a saved one
 
-#* --- Saves a sequence or loads a saved one ---
+# ! STILL TODO - TO BE INTEGRATED !
+#TODO
 
 def read_sequences(file):
     p = []

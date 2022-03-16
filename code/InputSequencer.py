@@ -1,6 +1,8 @@
 # Inputs (jacks) class
 # ? import pcf8574_io
 
+# ! NOT NECESSARY ????
+
 class InputSequencer(): # on a PCF8574 port expander
 
     def __init__(self, portExpander, pin):
