@@ -3,16 +3,18 @@
 # ! STILL TODO - TO BE INTEGRATED !
 #TODO
 
-def read_sequences(file):
+from Env import SAVE_FILE
+
+def read_sequences(SAVE_FILE):
     p = []
-    with open(file, encoding='utf-8') as f:
+    with open(SAVE_FILE, encoding='utf-8') as f:
         for i in f:
             a = i.split()
             p.append(a)
     return p
 
-def write_sequences(l, file):
-    with open(file, 'w', encoding='utf-8') as f:
-        for i in range(len(l)):
-            f.write(l[i][0] + ' ' + l[i][1] + '\n')
+def write_sequences(listStep, SAVE_FILE):
+    with open(SAVE_FILE, 'w', encoding='utf-8') as f:
+        for i in range(len(listStep)):
+            f.write(listStep[i][0] + ' ' + listStep[i][1] + '\n')
     

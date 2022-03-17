@@ -148,7 +148,7 @@ def on(): # plays the sequence #! CAN BE PUT IN A CLASS ?
 
 
 def endSequencer():
-    # Set the DACs to 0V and turns the LCD backlight off (executed when keyboard interrupt or other)
+    # Set the DACs to 0V and turns the LCD backlight and the LED sequence off (executed when keyboard interrupt or other)
     global sequencer
     global lcd
     for dac in sequencer.dacs:
