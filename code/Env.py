@@ -1,6 +1,9 @@
 
 # * Global variables:
 
+# Saved sequence file path
+SAVE_FILE = "/path/to/saved-sequence-file.txt"
+
 # Simulated DAC
 SIMULATED_DAC = False
 
