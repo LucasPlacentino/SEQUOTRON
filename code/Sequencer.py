@@ -81,7 +81,7 @@ class Sequencer:
             self.dac2 = DACSequencer(0, 1, 8, 2) # physical pin 26
             self.dac3 = DACSequencer(0, 1, 9, 3) # physical pin 24
         self.dacs = [self.dac1,self.dac2,self.dac3]
-        # need to open and close the spi bus every time we write to 1 dac
+        # (need to open and close the spi bus every time we write to 1 dac) -> done : modified the library, need to test
 
 
         self.cv1 = CV(1, self.dac2, LCD, 1) #? CV1_CHANNEL 

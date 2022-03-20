@@ -1,5 +1,15 @@
 """
 TRANH201INFO3 sequencer main file
+
+Ideally launched on RPi startup
+
+KeyboardInterrupt to exit program and shutdown components
+
+Use "Better Comments" extension on VSCode to see comments colored accordingly 
+(#*)
+(#!)
+(#?)
+
 """
 
 from gpiozero import Device #* for testing
