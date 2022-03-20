@@ -194,7 +194,7 @@ def endSequencer():
     for dac in sequencer.dacs:
         for i in range(2):
             dac.output.setVoltage(i, 0)
-            dac.output.shutdown(i) # ? 
+            #!dac.output.shutdown(i) # ? 
             print("---DAC", dac.number,"channel",i,"set to 0---")
     sequencer.ledSequence.turnAllLedOff()
     lcd.fullClearLCD()
