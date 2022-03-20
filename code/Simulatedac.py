@@ -28,3 +28,9 @@ class MCP4922Simulated():
     def shutdown(self, i):
         print("DAC shut down, channel",i)
 
+    def open(self):
+        print("DAC opened")
+
+    def close(self):
+        print("DAC closed")
+

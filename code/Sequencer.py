@@ -78,8 +78,11 @@ class Sequencer:
             self.dac3 = Simulatedac(0, 0, 9) # physical pin 24
         else:
             self.dac1 = DACSequencer(0, 1, 7, 1) # could be a MCP4921, physical pin 29
+            self.dac1.output.close()
             self.dac2 = DACSequencer(0, 1, 8, 2) # physical pin 26
+            self.dac2.output.close()
             self.dac3 = DACSequencer(0, 1, 9, 3) # physical pin 24
+            self.dac3.output.close()
         self.dacs = [self.dac1,self.dac2,self.dac3]
         # (need to open and close the spi bus every time we write to 1 dac) -> done : modified the library, need to test
 
@@ -115,6 +118,8 @@ class Sequencer:
         currentOctave = self.noteSequence.listSteps[self.noteSequence.step][0] # octave of the current note
         currentPitch = self.noteSequence.listSteps[self.noteSequence.step][1] # pitch of the current note
         currentNote = MAX_DAC*(((currentOctave*12)+currentPitch)/NB_NOTES)
+        self.dac1.output.open()
         self.dac1.setVoltage(PITCH_CHANNEL, int(currentNote))
+        self.dac1.output.close()
         print("play current note:",currentPitch,currentOctave,currentNote)
 

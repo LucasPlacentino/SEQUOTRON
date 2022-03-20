@@ -12,6 +12,7 @@ Use "Better Comments" extension on VSCode to see comments colored accordingly
 
 """
 
+from doctest import set_unittest_reportflags
 from gpiozero import Device #* for testing
 from gpiozero.pins.mock import MockFactory #* for testing
 import time
@@ -141,7 +142,9 @@ def on(): # plays the sequence #! CAN BE PUT IN A CLASS ?  # ! THREAD NEEDED ?
         pitch = sequencer.noteSequence.listSteps[tempo.step][1]
         octave = sequencer.noteSequence.listSteps[tempo.step][0]
         # change note each step
+        sequencer.dac1.output.open()
         sequencer.dac1.output.setVoltage(PITCH_CHANNEL, int(MAX_DAC*((12*int(octave) + int(pitch))/NB_NOTES))) # ! WHICH DAC ?
+        sequencer.dac1.output.close()
         print("step", tempo.step, "note to dac1 channel0:", pitch, octave)        
         
         print("----step start----")
@@ -149,12 +152,16 @@ def on(): # plays the sequence #! CAN BE PUT IN A CLASS ?  # ! THREAD NEEDED ?
         sequencer.ledSequence.ledOn(tempo.step)
         
         # start gate
+        sequencer.dac2.output.open()
         sequencer.dac2.output.setVoltage(GATE_CHANNEL, MAX_DAC) # ! WHICH DAC ?
+        sequencer.dac2.output.close()
         print("Gate value:", gate.value)
         time.sleep((60/tempo.value)*(gate.value)) # ?
         
         # end gate
+        sequencer.dac2.output.open()
         sequencer.dac2.output.setVoltage(GATE_CHANNEL, 0) # ! WHICH DAC ?
+        sequencer.dac2.output.clsoe()
         time.sleep((60/tempo.value)*(1-gate.value)) # ?
         
         print("----step ended----")
@@ -180,20 +187,28 @@ def startupSequence():
     print("Startup sequence")
     i = 0
     for p in notes:
+        sequencer.dac1.output.open()
         sequencer.dac1.output.setVoltage(PITCH_CHANNEL, int(MAX_DAC*((12*int(notes[i][0]) + int(notes[i][1]))/NB_NOTES))) # ! WHICH DAC ?
+        sequencer.dac1.output.close()
         print("note to dac1 channel0:", notes[i][1], notes[i][0])        
         
         # start gate
+        sequencer.dac2.output.open()
         sequencer.dac2.output.setVoltage(GATE_CHANNEL, MAX_DAC) # ! WHICH DAC ?
+        sequencer.dac2.output.close()
         print("Gate value:", gate.value)
         time.sleep((60/tempo.value)*(gate.value)) # ?
         
         # end gate
+        sequencer.dac2.output.open()
         sequencer.dac2.output.setVoltage(GATE_CHANNEL, 0) # ! WHICH DAC ?
+        sequencer.dac2.output.close()
         time.sleep((60/tempo.value)*(1-gate.value)) # ?
         
         i += 1
+    sequencer.dac1.output.open()
     sequencer.dac1.output.setVoltage(PITCH_CHANNEL, 0)
+    sequencer.dac1.output.close()
     print("startup sequence ended")
 
 
@@ -203,8 +218,10 @@ def endSequencer():
     global lcd
     for dac in sequencer.dacs:
         for i in range(2):
+            dac.output.open()
             dac.output.setVoltage(i, 0)
             #!dac.output.shutdown(i) # ? 
+            dac.output.close()
             print("---DAC", dac.number,"channel",i,"set to 0---")
     sequencer.ledSequence.turnAllLedOff()
     lcd.fullClearLCD()
