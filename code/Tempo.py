@@ -9,6 +9,8 @@ class Tempo:
         self.lcd = lcd
         self.step = 0
         self.on = ""
+        # test :
+        self.active = False
 
     def increaseTempo(self):
         if self.value < MAX_TEMPO :

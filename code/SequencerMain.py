@@ -10,11 +10,13 @@ import sys
 
 from signal import pause # ?
 
-from LCDSequencer import LCDSequencer#? #LCD class
+from LCDSequencer import LCDSequencer#? #LCD class not needed (in Sequencer)
 from Simulatelcd import Simulatelcd#? #Simulated LCD class, for testing purposes and/or when not running on a RPi
 from Sequencer import Sequencer #* critical
 from Tempo import Tempo #* critical
 from Gate import Gate #* critical
+
+# from ClockSequencer import ClockSequencer # ? testing
 
 #? :
 from Env import SIMULATED_LCD, SIMULATED_DAC, PITCH_CHANNEL, GATE_CHANNEL, MAX_DAC, NB_NOTES, NB_STEPS, STARTUP_SEQUENCE
@@ -51,6 +53,9 @@ def main(): # Main function, activated when sequencer launched/file run
     global gate
     gate = Gate(sequencer.dac2, 0, lcd)
     print("gate initialized", gate.value)
+
+    # test :
+    #clock = ClockSequencer(sequencer, tempo, gate)
 
     # Splash screen and startup sequence:
     lcd.splashScreen() # splash screen
