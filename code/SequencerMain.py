@@ -26,7 +26,7 @@ from Sequencer import Sequencer #* critical
 from Tempo import Tempo #* critical
 from Gate import Gate #* critical
 
-from ClockSequencer import ClockSequencer # ? testing
+from ClockSequencer import ClockSequencer # ? need some testing
 
 from Env import PITCH_CHANNEL, GATE_CHANNEL, MAX_DAC, NB_NOTES, NB_STEPS, STARTUP_SEQUENCE
 #* check if all imports from Env.py are necessary/present
