@@ -84,6 +84,9 @@ class MCP4922(object):
 
         GPIO.setup(self.cs, GPIO.OUT)
         GPIO.output(self.cs, 1)
+
+        #? self.spi.max_speed_hz = 1953000 #! ?
+
         #* As soon as MCP4922 object is created spidev bus and device are opened
         #* otherwise causes memory leak and creates Errno 24
         self.spi.open(self.spibus, self.spidevice) # ! comment ?
@@ -107,11 +110,17 @@ class MCP4922(object):
             value = 0
         #self.spi.open(self.spibus, self.spidevice) # ! uncomment ?
         output |= value
+        #* print("hex output :",output)
         buf0 = (output >> 8) & 0xff
+        #* print("buf0 :", buf0)
         buf1 = output & 0xff
+        #* print("buf1 :", buf1)
         GPIO.output(self.cs, 0)
+        #* print("cs 0")
         self.spi.writebytes([buf0, buf1])
+        #* print("writebytes :", [buf0, buf1])
         GPIO.output(self.cs, 1)
+        #* print("cs 1")
         #self.spi.close() # ! uncomment ? # ! modified, author forgot the parentheses ()
         return
 
