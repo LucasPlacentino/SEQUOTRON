@@ -31,7 +31,7 @@ class NoteSequence:
             self.step -= 1
         #self.step = (self.step - 1) % MAX_STEP  # if step = -1 -> 6
         print("Step : " + str(self.step+1)) # +1 because 1->8 not 0->7
-        self.lcd.displayStep((self.step+1), self.note[self.listSteps[self.step][1]],self.listSteps[self.step][0]) # +1 because 1->8 not 0->7
+        self.lcd.displayStep((self.step+1), self.note[self.listSteps[self.step][1]-1],self.listSteps[self.step][0]) # +1 because 1->8 not 0->7
         
         ''' # ! REMOVE ?
         if self.step > MIN_STEP:
@@ -70,7 +70,7 @@ class NoteSequence:
         else:
             self.listSteps[self.step][0] += 1
         print("octave increase")
-        self.lcd.displayNote(self.note[self.listSteps[self.step][1]],self.listSteps[self.step][0])
+        self.lcd.displayNote(self.note[self.listSteps[self.step][1]-1],self.listSteps[self.step][0])
     
     def decreaseOctave(self):
         if self.listSteps[self.step][0] == MIN_OCTAVE:
@@ -78,5 +78,5 @@ class NoteSequence:
         else:
             self.listSteps[self.step][0] -= 1
         print("octave decrease")
-        self.lcd.displayNote(self.note[self.listSteps[self.step][1]],self.listSteps[self.step][0])
+        self.lcd.displayNote(self.note[self.listSteps[self.step][1]-1],self.listSteps[self.step][0])
 
