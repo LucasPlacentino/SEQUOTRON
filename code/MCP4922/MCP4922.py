@@ -86,7 +86,7 @@ class MCP4922(object):
         GPIO.output(self.cs, 1)
         #* As soon as MCP4922 object is created spidev bus and device are opened
         #* otherwise causes memory leak and creates Errno 24
-        #! self.spi.open(self.spibus, self.spidevice) # ! comment ?
+        self.spi.open(self.spibus, self.spidevice) # ! comment ?
 
     def setVoltage(self, channel, value):
         """
@@ -105,14 +105,14 @@ class MCP4922(object):
             value = 4095
         if value < 0:
             value = 0
-        self.spi.open(self.spibus, self.spidevice) # ! uncomment ?
+        #self.spi.open(self.spibus, self.spidevice) # ! uncomment ?
         output |= value
         buf0 = (output >> 8) & 0xff
         buf1 = output & 0xff
         GPIO.output(self.cs, 0)
         self.spi.writebytes([buf0, buf1])
         GPIO.output(self.cs, 1)
-        self.spi.close() # ! uncomment ? # ! modified, author forgot the parentheses ()
+        #self.spi.close() # ! uncomment ? # ! modified, author forgot the parentheses ()
         return
 
     def setVoltage_gain(self, channel, value):
@@ -181,13 +181,13 @@ class MCP4922(object):
         else:
             raise ValueError(
                 'MCP4922 Says: Wrong Channel Selected! Chose either 0 or 1!')
-        self.spi.open(self.spibus, self.spidevice) # ! uncomment ?
+        #self.spi.open(self.spibus, self.spidevice) # ! uncomment ?
         buf0 = (output >> 8) & 0xff
         buf1 = output & 0xff
         GPIO.output(self.cs, 0)
         self.spi.writebytes([buf0, buf1])
         GPIO.output(self.cs, 1)
-        self.spi.close() # ! uncomment ? # ! modified, author forgot the parentheses ()
+        #self.spi.close() # ! uncomment ? # ! modified, author forgot the parentheses ()
         return
 
     def close(self):
