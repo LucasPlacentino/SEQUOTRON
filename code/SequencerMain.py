@@ -28,6 +28,8 @@ from Gate import Gate #* critical
 
 from ClockSequencer import ClockSequencer # ? need some testing
 
+import threading
+
 from Env import PITCH_CHANNEL, GATE_CHANNEL, MAX_DAC, NB_NOTES, NB_STEPS, STARTUP_SEQUENCE
 #* check if all imports from Env.py are necessary/present
 
@@ -87,7 +89,7 @@ def main(): # Main function, activated when sequencer launched/file run
     #sequencer.buttonDecrOct.when_pressed = lcd.test #* USED FOR TESTING
 
     # PLAY/PAUSE :
-    sequencer.button1.when_pressed = on
+    sequencer.button1.when_pressed = threadOn
     #! testing :
     #sequencer.button1.when_pressed = clock.playClock # check line 68
 
@@ -132,10 +134,15 @@ def main(): # Main function, activated when sequencer launched/file run
 # Functions :
 
 def off(): # pauses the sequence
+    global tempo
     tempo.on = "off"
 
+def threadOn():
+    threadClock = threading.Thread(target=on)
+    threadClock.start()
 
 def on(): # plays the sequence #! CAN BE PUT IN A CLASS ?  # ! THREAD NEEDED ?
+    global tempo
     tempo.on = "on"
     #* while sequencer.button1.is_pressed: # ?
     while tempo.on == "on": # Clock of sequencer:
