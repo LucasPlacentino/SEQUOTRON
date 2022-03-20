@@ -37,6 +37,8 @@ class LCDSequencer: # must initiate in main file: lcd = LCDSequencer()
         self.lcd.cursor_pos = (1, cursorPosTempo)
         self.lcd.write_string(stringTempo)
 
+        print("Tempo:",stringTempo)
+
     def displayNote(self, pitch, octave):
         
         self.clearBottomLeftLCD()
@@ -59,11 +61,13 @@ class LCDSequencer: # must initiate in main file: lcd = LCDSequencer()
         stringCV = str(int(cvValue)) #? +"%" ?
         cursorPosCV = 16 - len(stringCV)
 
-        self.lcd.cursor_pos = (0, 9) #! need to check
-        self.lcd.write_string("..CV#"+str(cvNumber)+":")  # ! need to check
+        self.lcd.cursor_pos = (0, 10) #! need to check
+        self.lcd.write_string("CV #"+str(cvNumber)+":")  # ! need to check
 
-        self.lcd.cursor_pos = (1, cursorPosCV-4)  # ! need to check
-        self.lcd.write_string("...."+stringCV)  # ! need to check
+        self.lcd.cursor_pos = (1, cursorPosCV)  # ! need to check
+        self.lcd.write_string(stringCV)  # ! need to check
+
+        print("CV",cvNumber, "value:",stringCV)
 
     def displayGate(self, gate):
 
@@ -77,6 +81,8 @@ class LCDSequencer: # must initiate in main file: lcd = LCDSequencer()
 
         self.lcd.cursor_pos = (1, cursorPosGate) #! need to check
         self.lcd.write_string(stringGate)  # ! need to check
+        
+        print("Gate:",stringGate)
         
     def test(self):
         print("test lcd")# + str(self.testvar))
@@ -111,92 +117,16 @@ class LCDSequencer: # must initiate in main file: lcd = LCDSequencer()
         self.lcd.backlight_enabled = boolean
         print("LCD Backlight:",str(boolean))
 
+    def splashScreen(self):
+        print("splash screen LCD")
+        #self.lcd.fullClearLCD()
+        
+        self.lcd.cursor_pos = (0, 0)
+        self.lcd.write_string("SEQUOTRON...")
+        
+        self.lcd.cursor_pos = (1, 4)
+        self.lcd.write_string("...SEQUOTRON")
+        
+        print("  ###  SEQUOTRON  ###  ")
 
 
-
-
-#! below were just different libraries tests
-"""
-#pip install rpi-lcd
-from rpi_lcd import LCD
-from time import sleep
-
-lcd = LCD()
-
-lcd.text('Hello', 1)
-lcd.text('World!', 1, 'right')
-lcd.text('Raspberry Pi', 2, 'center')
-
-sleep(5)
-lcd.clear()
-"""
-
-
-"""pour justifier du texte à droite (voir librairies utlisée)
-autoScroll(True)
-rtl(True)
-rightToLeft(True)
-ou des commandes du genre
-"""
-
-""" RPLCD voir (dans lcd.py):
-def _set_text_align_mode(self, value):
-        if value == 'left':
-            self._text_align_mode = c.Alignment.left
-        elif value == 'right':
-            self._text_align_mode = c.Alignment.right
-        else:
-            raise ValueError('Text align mode must be either `left` or `right`')
-        self.command(c.LCD_ENTRYMODESET | self._text_align_mode | self._display_shift_mode)
-        c.usleep(50)
-
-    text_align_mode = property(_get_text_align_mode, _set_text_align_mode,
-            doc='The text alignment (``left`` or ``right``).')
-"""
-
-""" on dirait que ceci est exactement ce qu'il faut
-https://github.com/Depau/python-liquidcrystal
-"""
-
-""" test https://learn.adafruit.com/i2c-spi-lcd-backpack/python-circuitpython
-import time
-import board
-import adafruit_character_lcd.character_lcd_i2c as character_lcd
-
-# Modify this if you have a different sized Character LCD
-lcd_columns = 16
-lcd_rows = 2
-
-# Initialise I2C bus.
-i2c = board.I2C()  # uses board.SCL and board.SDA
-
-# Initialise the lcd class
-lcd = character_lcd.Character_LCD_I2C(i2c, lcd_columns, lcd_rows)
-
-# Turn backlight on
-lcd.backlight = True
-# Print two line message right to left
-lcd.text_direction = lcd.RIGHT_TO_LEFT
-lcd.message = "Hello\nCircuitPython"
-# Wait 5s
-time.sleep(5)
-# Return text direction to left to right
-lcd.text_direction = lcd.LEFT_TO_RIGHT
-"""
-
-""" test https://www.circuitbasics.com/raspberry-pi-i2c-lcd-set-up-and-programming/
-import I2C_LCD_driver
-from time import *
-
-mylcd = I2C_LCD_driver.lcd()
-
-padding = " " * 16
-my_long_string = "This is a string that needs to scroll"
-padded_string = my_long_string + padding
-
-for i in range (0, len(my_long_string)):
- lcd_text = padded_string[((len(my_long_string)-1)-i):-i]
- mylcd.lcd_display_string(lcd_text,1)
- sleep(0.4)
- mylcd.lcd_display_string(padding[(15+i):i], 1)
-"""

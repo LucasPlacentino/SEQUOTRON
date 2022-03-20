@@ -12,28 +12,22 @@ class Gate:
         self.lcd = lcd
 
     def increaseGate(self):
-        if self.value >= 0.95:
+        if self.value >= 0.97:
             self.value = 0
         else:
-            self.value += 0.1
+            self.value += 0.05
         self.lcd.displayGate(round(self.value,1))
         # self.dac.setVoltage(self.channel, 4096) for an amount of time
-        print(self, self.dac, self.channel, round(self.value,1))
+        print("increase gate", self.dac, self.channel, round(self.value,1))
 
     
     def decreaseGate(self):
-        if self.value <= 0.05:
+        if self.value <= 0.02:
             self.value = 1
         else:
-            self.value -= 0.1
+            self.value -= 0.05
         self.lcd.displayGate(round(self.value,1))
         # self.dac.setVoltage(self.channel, 4096)  for an amount of time
-        print(self, self.dac, self.channel, round(self.value,1))
+        print("decreased gate", self.dac, self.channel, round(self.value,1))
 
-    '''
-    def sendGateSignal(self, tempo): # called every step
-        #self.dac.setVoltage(self.channel, 4096)
-        print("Gate sent", self.dac, self.channel, self.value)
-        ###### time.sleep((60/tempo.value)*self.value)
-        #self.dac.setVoltage(self.channel, 0)
-    '''
+

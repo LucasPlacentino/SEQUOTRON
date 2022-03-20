@@ -28,7 +28,7 @@ class CV:
         #self.value = self.n%24 # (self.n%24) + 1 ?
         self.value = self.value%MAX_CV
         self.dac.output.setVoltage(self.channel, int(MAX_DAC*self.value/24)) #! MAX_CV rather than 24 ?
-        print(self, self.dac, self.channel, self.value)
+        print("CV", self.number, "increased", " (DAC:", self.dac.number, "channel", self.channel, ") Value:", self.value)
         self.lcd.displayCV(self.number, self.value) #? need to test
 
     def decreaseCV(self):
@@ -37,5 +37,6 @@ class CV:
         else:
             self.value -= 1
         self.dac.output.setVoltage(self.channel, int(MAX_DAC*self.value/24)) #! MAX_CV rather than 24 ?
-        print(self, self.dac, self.channel, self.value)
+        print("CV", self.number, "decreased", " (DAC:", self.dac.number, "channel", self.channel, ") Value:", self.value)
         self.lcd.displayCV(self.number, self.value) #? need to test
+

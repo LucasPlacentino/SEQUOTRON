@@ -11,7 +11,7 @@ class NoteSequence:
         self.note = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"]
         self.listSteps = []
         for i in range(NB_STEPS): # creation of the list of steps
-            self.listSteps.append([0, 1]) #cette liste représente l'octave 0 et la note 1
+            self.listSteps.append([1, 0]) #cette liste représente l'octave 0 et la note 1
         print("steps list created:\n"+str(self.listSteps))
 
     def increaseStep(self):

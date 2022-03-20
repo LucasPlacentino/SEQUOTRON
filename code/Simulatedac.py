@@ -25,3 +25,6 @@ class MCP4922Simulated():
         voltage = 5*(value/4095)
         print("(Voltage equivalent:",str(round(voltage,3))+"V)")
 
+    def shutdown(self, i):
+        print("DAC shut down, channel",i)
+
