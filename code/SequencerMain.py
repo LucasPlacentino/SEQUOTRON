@@ -143,9 +143,9 @@ def on(): # plays the sequence #! CAN BE PUT IN A CLASS ?  # ! THREAD NEEDED ?
         octave = sequencer.noteSequence.listSteps[tempo.step][0]
         # change note each step
         sequencer.dac1.output.open()
-        sequencer.dac1.output.setVoltage(PITCH_CHANNEL, int(MAX_DAC*((12*int(octave) + int(pitch))/NB_NOTES))) # ! WHICH DAC ?
+        sequencer.dac1.output.setVoltage(PITCH_CHANNEL, int(MAX_DAC*((12*int(octave) + int(pitch))/NB_NOTES))) # ! CORRECT DAC ?
         sequencer.dac1.output.close()
-        print("step", tempo.step, "note to dac1 channel0:", pitch, octave)        
+        print("step", tempo.step+1, "note to dac1 channel0:", pitch, octave)        
         
         print("----step start----")
         
@@ -153,14 +153,14 @@ def on(): # plays the sequence #! CAN BE PUT IN A CLASS ?  # ! THREAD NEEDED ?
         
         # start gate
         sequencer.dac2.output.open()
-        sequencer.dac2.output.setVoltage(GATE_CHANNEL, MAX_DAC) # ! WHICH DAC ?
+        sequencer.dac2.output.setVoltage(GATE_CHANNEL, MAX_DAC) # ! CORRECT DAC ?
         sequencer.dac2.output.close()
         print("Gate value:", gate.value)
         time.sleep((60/tempo.value)*(gate.value)) # ?
         
         # end gate
         sequencer.dac2.output.open()
-        sequencer.dac2.output.setVoltage(GATE_CHANNEL, 0) # ! WHICH DAC ?
+        sequencer.dac2.output.setVoltage(GATE_CHANNEL, 0) # ! CORRECT DAC ?
         sequencer.dac2.output.close()
         time.sleep((60/tempo.value)*(1-gate.value)) # ?
         
@@ -181,20 +181,20 @@ def startupSequence():
     i = 0
     for p in notes:
         sequencer.dac1.output.open()
-        sequencer.dac1.output.setVoltage(PITCH_CHANNEL, int(MAX_DAC*((12*int(notes[i][0]) + int(notes[i][1]))/NB_NOTES))) # ! WHICH DAC ?
+        sequencer.dac1.output.setVoltage(PITCH_CHANNEL, int(MAX_DAC*((12*int(notes[i][0]) + int(notes[i][1]))/NB_NOTES))) # ! CORRECT DAC ?
         sequencer.dac1.output.close()
         print("note to dac1 channel0:", notes[i][1], notes[i][0])        
         
         # start gate
         sequencer.dac2.output.open()
-        sequencer.dac2.output.setVoltage(GATE_CHANNEL, MAX_DAC) # ! WHICH DAC ?
+        sequencer.dac2.output.setVoltage(GATE_CHANNEL, MAX_DAC) # ! CORRECT DAC ?
         sequencer.dac2.output.close()
         print("Gate value:", gate.value)
         time.sleep((60/tempo.value)*(gate.value)) # ?
         
         # end gate
         sequencer.dac2.output.open()
-        sequencer.dac2.output.setVoltage(GATE_CHANNEL, 0) # ! WHICH DAC ?
+        sequencer.dac2.output.setVoltage(GATE_CHANNEL, 0) # ! CORRECT DAC ?
         sequencer.dac2.output.close()
         time.sleep((60/tempo.value)*(1-gate.value)) # ?
         
