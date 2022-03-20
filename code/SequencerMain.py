@@ -12,25 +12,24 @@ Use "Better Comments" extension on VSCode to see comments colored accordingly
 
 """
 
-from doctest import set_unittest_reportflags
 from gpiozero import Device #* for testing
 from gpiozero.pins.mock import MockFactory #* for testing
-import time
-import sys
+import time #* critical
+import sys #* critical
 # ? import threading # ?
 
-from signal import pause # ?
+from signal import pause # ? is pause() needed ?
 
-from LCDSequencer import LCDSequencer#? #LCD class not needed (in Sequencer)
-from Simulatelcd import Simulatelcd#? #Simulated LCD class, for testing purposes and/or when not running on a RPi
+#? from LCDSequencer import LCDSequencer#? #LCD class not needed (in Sequencer)
+#? from Simulatelcd import Simulatelcd#? #Simulated LCD class, for testing purposes and/or when not running on a RPi
 from Sequencer import Sequencer #* critical
 from Tempo import Tempo #* critical
 from Gate import Gate #* critical
 
-# from ClockSequencer import ClockSequencer # ? testing
+from ClockSequencer import ClockSequencer # ? testing
 
-#? :
-from Env import SIMULATED_LCD, SIMULATED_DAC, PITCH_CHANNEL, GATE_CHANNEL, MAX_DAC, NB_NOTES, NB_STEPS, STARTUP_SEQUENCE
+from Env import PITCH_CHANNEL, GATE_CHANNEL, MAX_DAC, NB_NOTES, NB_STEPS, STARTUP_SEQUENCE
+#* check if all imports from Env.py are necessary/present
 
 
 def main(): # Main function, activated when sequencer launched/file run
@@ -66,7 +65,7 @@ def main(): # Main function, activated when sequencer launched/file run
     print("gate initialized", gate.value)
 
     # test :
-    #clock = ClockSequencer(sequencer, tempo, gate)
+    #clock = ClockSequencer(sequencer, tempo, gate) # check line 91
 
     # Splash screen and startup sequence:
     lcd.splashScreen() # splash screen
@@ -85,55 +84,56 @@ def main(): # Main function, activated when sequencer launched/file run
     lcd.displayStep(init_step, init_pitch, init_octave)
 
     
-    #sequencer.buttonDecrOct.when_pressed = lcd.test #* FOR TESTING
+    #sequencer.buttonDecrOct.when_pressed = lcd.test #* USED FOR TESTING
 
-    sequencer.button1.when_pressed = on # TODO
+    # PLAY/PAUSE :
+    sequencer.button1.when_pressed = on
+    #! testing :
+    #sequencer.button1.when_pressed = clock.playClock # check line 68
+
+    # OCTAVES :
     sequencer.buttonIncrOct.when_pressed = sequencer.noteSequence.increaseOctave #?
     sequencer.buttonDecrOct.when_pressed = sequencer.noteSequence.decreaseOctave #?
-    #* sequencer.buttonHearNote.when_pressed = sequencer.playNote
 
+    # TRIGGER/HEARNOTE : # TODO
+    # TODO sequencer.buttonHearNote.when_pressed = sequencer.playNote
+
+    # PITCH :
     sequencer.rotorPitch.rotor.when_rotated_clockwise = sequencer.noteSequence.increasePitch
     sequencer.rotorPitch.rotor.when_rotated_counter_clockwise = sequencer.noteSequence.decreasePitch
+
+    # TEMPO :
     sequencer.rotorTempo.rotor.when_rotated_clockwise = tempo.increaseTempo
     sequencer.rotorTempo.rotor.when_rotated_counter_clockwise = tempo.decreaseTempo
-    sequencer.rotorGate.rotor.when_rotated_clockwise = gate.increaseGate # ! makes the script end when uncommented?
-    sequencer.rotorGate.rotor.when_rotated_counter_clockwise = gate.decreaseGate # ! makes the script end when uncommented?
+
+    # GATE :
+    sequencer.rotorGate.rotor.when_rotated_clockwise = gate.increaseGate
+    sequencer.rotorGate.rotor.when_rotated_counter_clockwise = gate.decreaseGate
+
+    # CV 1 :
     sequencer.rotorCV1.rotor.when_rotated_clockwise = sequencer.cv1.increaseCV
     sequencer.rotorCV1.rotor.when_rotated_counter_clockwise = sequencer.cv1.decreaseCV
+
+    # CV 2 :
     sequencer.rotorCV2.rotor.when_rotated_clockwise = sequencer.cv2.increaseCV
     sequencer.rotorCV2.rotor.when_rotated_counter_clockwise = sequencer.cv2.decreaseCV
+
+    # CV 3 :
     sequencer.rotorCV3.rotor.when_rotated_clockwise = sequencer.cv3.increaseCV
     sequencer.rotorCV3.rotor.when_rotated_counter_clockwise = sequencer.cv3.decreaseCV
+
+    # STEP :
     sequencer.rotorStep.rotor.when_rotated_clockwise = sequencer.noteSequence.increaseStep
     sequencer.rotorStep.rotor.when_rotated_counter_clockwise = sequencer.noteSequence.decreaseStep
     
+    pause() # ?
 
-    
-    #while True: # works at the same time as the rotary encoders are turning and changing values
-    #    print("testing")
-    #    time.sleep(5)
-        #on() # FOR TESTING
 
-    pause()
-
-''' for testing purposes
-def setvoltage(a):
-    #dac3.setVoltage(1, 12*l_step[tempo.n][0] + l_step[tempo.n][1])
-    print("GATE ON TEST",a)
-    #dac3.setVoltage(1, 0)
-    print(tempo.step,a)
-'''
+# Functions :
 
 def off(): # pauses the sequence
     tempo.on = "off"
 
-''' for testing purposes
-def setvoltage2(test):
-    print("TEST GATE dac ON")
-    time.sleep((60/tempo.value)*(gate.value))
-    print("TEST GATE dac OFF")
-    time.sleep((60/tempo.value)*(1-gate.value))
-'''
 
 def on(): # plays the sequence #! CAN BE PUT IN A CLASS ?  # ! THREAD NEEDED ?
     tempo.on = "on"
@@ -165,18 +165,11 @@ def on(): # plays the sequence #! CAN BE PUT IN A CLASS ?  # ! THREAD NEEDED ?
         time.sleep((60/tempo.value)*(1-gate.value)) # ?
         
         print("----step ended----")
-        ''' test
-        t1 = threading.Timer((60/tempo.value)*(1-gate.value), setvoltage)
-        t1.run()
-        time.sleep((60/tempo.value)*(gate.value))
-        t2 = threading.Thread(setvoltage2)
-        t2.run()
-        #dac3.setVoltage(1, 0)
-        print("Set Voltage test")
-        '''
+
         tempo.step += 1
-        tempo.step = tempo.step%NB_STEPS
-        if sequencer.button1.is_pressed == False:
+        tempo.step = tempo.step%NB_STEPS # if tempo.step == NB_STEPS : tempo.step == 0
+
+        if sequencer.button1.is_pressed == False: # switch is on position "pause" (off)
             off()
 
 def startupSequence():

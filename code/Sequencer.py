@@ -12,21 +12,13 @@ from Simulatedac import Simulatedac #* for testing only
 from RotaryEncoder import RotaryEncoder #* critical
 from CV import CV #* critical
 from NoteSequence import NoteSequence #* critical
-from LEDSequence import LEDSequence
+from LEDSequence import LEDSequence #* critical
 #! import pcf8574_io
 # ? from InputSequencer import InputSequencer
 
-from Env import SIMULATED_LCD, SIMULATED_DAC, MAX_STEP, MIN_STEP, MAX_TEMPO, MIN_TEMPO, MAX_OCTAVE, MIN_OCTAVE, MAX_PITCH, MIN_PITCH, MAX_CV,MIN_CV, MAX_DAC, LED_QUANTITY, PITCH_CHANNEL, CV1_CHANNEL, CV2_CHANNEL, CV3_CHANNEL, GATE_CHANNEL, NB_NOTES, NB_STEPS
-#* check if all imports from Env.py are necessary
+from Env import SIMULATED_LCD, SIMULATED_DAC, MAX_DAC, PITCH_CHANNEL, NB_NOTES
+#* check if all imports from Env.py are necessary/present
 
-''' # ! NOT WORKING - REMOVE
-if SIMULATED_LCD:
-    LCD = Simulatelcd()  # ? or in SequencerMain
-else:
-    LCD = LCDSequencer() # ? or in SequencerMain
-'''
-#! uncomment next line if test (line 44-48) is unconclusive
-#LCD = LCDSequencer()
 
 class Sequencer:
     '''
@@ -54,7 +46,7 @@ class Sequencer:
 
         # ? LCD.displayNote(self.noteSequence.listSteps[self.noteSequence.step][0], self.noteSequence.listSteps[self.noteSequence.step][1]) # done in SequencerMain
 
-        self.button1 = gpiozero.Button(5) # physical pin 29 #! should be renamed: button1 is not a good name (more like buttonPlay)
+        self.button1 = gpiozero.Button(5) # physical pin 29 # NOTE should be renamed: button1 is not a good name (more like buttonPlay)
         self.buttonIncrOct = gpiozero.Button(13) #? physical pin 33
         self.buttonDecrOct = gpiozero.Button(16) #? physical pin 36
         # # TODO self.buttonHearNote = gpiozero.Button(4000000) # physical pin ? (step RotaryEncoder button)
@@ -92,10 +84,9 @@ class Sequencer:
         self.cv3 = CV(3, self.dac3, LCD, 1) #? CV3_CHANNEL 
 
         #TODO add switches
-        #! Play Pause will be coded as a button
         #* OR use a simple Button(pin) and use button.is_pressed (True if HIGH)
         #? self.switchClock = gpiozero.InputDevice(19) # set pin for the switch1 HIGH - physical pin 35
-        #! self.switchPause = gpiozero.InputDevice(20) # set pin for the switch2 HIGH - physical pin 38
+        # self.switchPause = gpiozero.InputDevice(20) # set pin for the switch2 HIGH - physical pin 38 # actually is button1
         # then use switchExample.is_active (True if HIGH or False if LOW)
          
         #! convert them to 3.3v - voltage divider or via the Logic Level Shifter ?

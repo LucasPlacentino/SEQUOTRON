@@ -14,9 +14,9 @@ class ClockSequencer():
         self.sequencer = sequencer
         self.tempo = tempo
         self.gate = gate
-        #self.noteSequence = sequencer.noteSequence
+        #self.noteSequence = sequencer.noteSequence # ?
 
-    def on(self):
+    def playClock(self):
         self.tempo.active = True
         while self.tempo.active:
             pitch = self.sequencer.noteSequence.listSteps[self.tempo.step][1]
@@ -43,9 +43,9 @@ class ClockSequencer():
             self.tempo.step += 1
             self.tempo.step = self.tempo.step%NB_STEPS
             if self.sequencer.button1.is_pressed == False:
-                self.off()
+                self.pauseClock()
 
-    def off(self):
+    def pauseClock(self):
         self.tempo.active = False
 
 
