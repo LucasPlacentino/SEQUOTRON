@@ -161,7 +161,7 @@ def on(): # plays the sequence #! CAN BE PUT IN A CLASS ?  # ! THREAD NEEDED ?
         # end gate
         sequencer.dac2.output.open()
         sequencer.dac2.output.setVoltage(GATE_CHANNEL, 0) # ! WHICH DAC ?
-        sequencer.dac2.output.clsoe()
+        sequencer.dac2.output.close()
         time.sleep((60/tempo.value)*(1-gate.value)) # ?
         
         print("----step ended----")
