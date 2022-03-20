@@ -52,17 +52,17 @@ class Sequencer:
         self.noteSequence = NoteSequence(LCD)
         self.ledSequence = LEDSequence()
 
-        # ? LCD.displayNote(self.noteSequence.listSteps[self.noteSequence.step][0], self.noteSequence.listSteps[self.noteSequence.step][1])
+        # ? LCD.displayNote(self.noteSequence.listSteps[self.noteSequence.step][0], self.noteSequence.listSteps[self.noteSequence.step][1]) # done in SequencerMain
 
-        self.button1 = gpiozero.Button(5) # physical pin 29
+        self.button1 = gpiozero.Button(5) # physical pin 29 #! should be renamed: button1 is not a good name (more like buttonPlay)
         self.buttonIncrOct = gpiozero.Button(13) #? physical pin 33
         self.buttonDecrOct = gpiozero.Button(16) #? physical pin 36
-        #* self.buttonHearNote = gpiozero.Button(4000000) # physical pin ? (step RotaryEncoder button)
-        #* self.buttonShowCV1 = gpiozero.Button(4000000) # physical pin ? (CV1 RE button)
-        #* self.buttonShowCV2 = gpiozero.Button(4000000) # physical pin ? (CV2 RE button)
-        #* self.buttonShowCV3 = gpiozero.Button(4000000) # physical pin ? (CV3 RE button)
-        #* self.buttonShowTempo = gpiozero.Button(4000000) # physical pin ? (tempo RE button)
-        #* self.buttonShowGate = gpiozero.Button(4000000) # physical pin ? (gate RE button)
+        # # TODO self.buttonHearNote = gpiozero.Button(4000000) # physical pin ? (step RotaryEncoder button)
+        # # TODO self.buttonShowCV1 = gpiozero.Button(4000000) # physical pin ? (CV1 RE button)
+        # # TODO self.buttonShowCV2 = gpiozero.Button(4000000) # physical pin ? (CV2 RE button)
+        # # TODO self.buttonShowCV3 = gpiozero.Button(4000000) # physical pin ? (CV3 RE button)
+        # # TODO self.buttonShowTempo = gpiozero.Button(4000000) # physical pin ? (tempo RE button)
+        # # TODO self.buttonShowGate = gpiozero.Button(4000000) # physical pin ? (gate RE button)
 
         self.rotorPitch = RotaryEncoder(6, 12,"pitch") #! phsical pin ?
         self.rotorTempo = RotaryEncoder(27, 17, "tempo") # physical pin 11 and 13
@@ -84,7 +84,7 @@ class Sequencer:
             self.dac3 = DACSequencer(0, 1, 9, 3) # physical pin 24
             self.dac3.output.close()
         self.dacs = [self.dac1,self.dac2,self.dac3]
-        # (need to open and close the spi bus every time we write to 1 dac) -> done : modified the library, need to test
+        # (need to open and close the spi bus every time we write to 1 dac) #* -> done
 
 
         self.cv1 = CV(1, self.dac2, LCD, 1) #? CV1_CHANNEL 
