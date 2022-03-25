@@ -1,5 +1,5 @@
 # Code of the sequencer
-
+*WIP*
 ### Table of contents
 
 <!--ts-->
@@ -14,9 +14,9 @@
 
 
 # Code
-blabla
+*WIP*
 
-## Structure
+## Structure :
 *WIP*
 
 
@@ -28,18 +28,19 @@ blabla
 
 # About
 
-## Authors and contributors
+## Authors and contributors :
 - [Lucas Placentino](https://github.com/lucasplacentino)
-- Felix Rosso
+- [Felix Rosso](https://github.com/felixlebg)
 - [Kamil Pietrasz](https://github.com/NexieSlowo)
 - Robin Afuera
 
-## Project Context
+## Project Context :
 BA2 year project - INFO section - **Modular Synth Sequencer**
 
 *2021-2022 TRAN-H201 - INFO3* <br>
 ***ULB EPB***
 
+--------------------------------------------
 
 # License
 Software: Licensed under Apache License Version 2.0

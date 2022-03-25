@@ -20,7 +20,7 @@
 
 # Plans and design
 *WIP*
-## Design
+## Design :
 *WIP*
 ### Here is what the idea of the design is:
 ![Sequencer Design rev2 1](https://user-images.githubusercontent.com/23436953/154850474-aaf32eb7-b44f-4970-b82d-26ea91712338.png)
@@ -34,18 +34,19 @@
 
 # About
 
-## Authors and contributors
+## Authors and contributors :
 - [Lucas Placentino](https://github.com/lucasplacentino)
-- Felix Rosso
+- [Felix Rosso](https://github.com/felixlebg)
 - [Kamil Pietrasz](https://github.com/NexieSlowo)
 - Robin Afuera
 
-## Project Context
+## Project Context :
 BA2 year project - INFO section - **Modular Synth Sequencer**
 
 *2021-2022 TRAN-H201 - INFO3* <br>
 ***ULB EPB***
 
+-------------------------------------
 
 # License
 Hardware: Licensed under CERN-OHL-P v2

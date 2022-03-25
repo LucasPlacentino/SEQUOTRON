@@ -1,5 +1,5 @@
 # SEQUOTRON - Modular Synth Sequencer
-
+## *WIP*
 ### Table of contents
 
 <!--ts-->
@@ -12,7 +12,7 @@
       * [Steps](#steps)
    * [Code](#code)
       * [](#)
-   * [Upgrades](#upgrades)
+   * [Future upgrades](#future-upgrades)
    * [Notice](#notice)
    * [About](#about)
       * [Authors and contributors](#authors-and-contributors)
@@ -22,34 +22,54 @@
 <!--te-->
 
 # Description
-*WIP*
+SEQUOTRON is a Digital Step Sequencer (and Control Voltage generator) for (semi-)Modular Synthetizers, based on a Raspberry Pi.  
 
+*WIP*
 # Usage
+You can plug 3.5mm Jacks cables to a modular synthetizers to control :
+- Pitch,
+- Gate,
+- 3 user-defined Control Voltages.  
+
+*WIP*
+## LCD Screen :
 *WIP*
 
-## a
+## Rotary Encoders :
+*WIP*
 
+## Buttons :
+*WIP*
+
+## Switches :
+*WIP*
 
 # Construction
 *WIP*
-## Design
+## Design :
 *WIP*
-## BOM (Bill Of Materials)
+## BOM (Bill Of Materials) :
 *WIP*
-## Steps
-*WIP* wiggle
+## Steps :
+*WIP*
 
 # Code
 *WIP*
-## b
+## b :
 *WIP*
 
-# Upgrades
-*WIP*
+# Future upgrades
+- Silence button (silence a single step)
+- Per step gate
+- Sequence longer than 8 steps
+- Saving and loading a sequence
+- Whole ADSR (Attack-Delay-Sustain-Release) envelope figure generation
+- External clock control
+- External play/pause control
 
 # Notice
 
-### This sequencer is designed to work on the Behringer CRAVE semi-modular synth, but can be used on other synthetisers :
+### This sequencer is designed to work on the Behringer CRAVE semi-modular synth, but can be used on other synthetizers :
 
 ![CRAVE_Top](https://user-images.githubusercontent.com/23436953/137537161-592bf523-0215-4223-ab55-275d13cd8a0b.png)
 
@@ -58,18 +78,19 @@
 
 # About
 
-## Authors and contributors
+## Authors and contributors :
 - [Lucas Placentino](https://github.com/lucasplacentino)
 - [Felix Rosso](https://github.com/felixlebg)
 - [Kamil Pietrasz](https://github.com/NexieSlowo)
 - Robin Afuera
 
-## Project Context
+## Project Context :
 BA2 year project - INFO section - **Modular Synth Sequencer**
 
 *2021-2022 TRAN-H201 - INFO3* <br>
 ***ULB EPB***
 
+------------------------------------------------
 
 # License
 - Hardware: Licensed under CERN-OHL-P v2
