@@ -30,17 +30,19 @@ from ClockSequencer import ClockSequencer # ? need some testing
 
 import threading
 
-from Env import PITCH_CHANNEL, GATE_CHANNEL, MAX_DAC, NB_NOTES, NB_STEPS, STARTUP_SEQUENCE
+from Env import PITCH_CHANNEL, GATE_CHANNEL, MAX_DAC, NB_NOTES, NB_STEPS, STARTUP_SEQUENCE, MOCK_PINS
 #* check if all imports from Env.py are necessary/present
 
 
 def main(): # Main function, activated when sequencer launched/file run
 
     # ! here below is for setting the pins from gpiozero as fake pins for testing purposes
-    # ! comment when testing has ended
-    #gpiozero.Device.pin_factory = gpiozero.pins.mock.MockFactory()
-    #Device.pin_factory = MockFactory()
-    #print("------!-------MOCK PINS------!-------")
+    if MOCK_PINS:
+        gpiozero.Device.pin_factory = gpiozero.pins.mock.MockFactory()
+        Device.pin_factory = MockFactory()
+        print("------!-------MOCK PINS------!-------")
+    else:
+        print("--- using real pins ---")
     # ! -------------------
 
     global sequencer
