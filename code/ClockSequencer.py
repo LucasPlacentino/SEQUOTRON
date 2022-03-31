@@ -1,4 +1,5 @@
 # clock class
+import threading
 import time
 
 from Env import NB_STEPS, GATE_CHANNEL, MAX_DAC, PITCH_CHANNEL, NB_NOTES
@@ -15,6 +16,10 @@ class ClockSequencer():
         self.tempo = tempo
         self.gate = gate
         #self.noteSequence = sequencer.noteSequence # ?
+
+    def launch_clock(self):
+        self.thread_clock = threading.Thread(target=self.playClock)
+        self.thread_clock.start()
 
     def playClock(self):
         self.tempo.active = True
@@ -49,71 +54,9 @@ class ClockSequencer():
             self.tempo.step += 1
             self.tempo.step = self.tempo.step%NB_STEPS
             
-            if self.sequencer.button1.is_pressed == False:
+            if not self.sequencer.button1.is_pressed:
                 self.pauseClock()
 
     def pauseClock(self):
         self.tempo.active = False
 
-
-
-#! NOT NECESSARY ?
-
-'''
-import time
-import threading
-
-
-class Tempo:
-    value = 100
-    n = 0
-    on = "on"
-
-tempo = Tempo()
-
-
-def setvoltage():
-    dac3.setVoltage(1, 12*l_step[tempo.n][0] + l_step[tempo.n][1])
-
-
-def off():
-    tempo.on = "off"
-
-
-def on():
-    tempo.on = "on"
-    while tempo.on == "on":
-        threading.Timer(60/tempo.value, setvoltage).start()
-        tempo.n += 1
-        tempo.n = tempo.n%8
-        button1.when_released = off
-'''
-
-
-
-"""class ClockSequencer:
-
-    def __init__(self):
-        self.internal = True
-
-    def clockTypeToggle(self, type="internal"):
-        if type == "internal":
-            self.internal = True
-        elif type == "external":
-            self.internal = False
-        else:
-            #Error
-            print("Error, wrong clock type. Clock set to default (internal)")
-            self.internal = True
-
-    def ticking(self, tempo): #! sends the clock signal to gate, note, sequence, steps, etc
-        if self.internal:
-            print("tick")
-            clock = 1
-            #time.sleep(60/self.tempo.current_tempo)
-            #send a clock signal
-            clock = 0
-        else:
-            #external clock
-            pass
-"""
