@@ -2,6 +2,8 @@
 
 import gpiozero
 
+# ! really necessary ?
+
 class RotaryEncoder:
     
     def __init__(self, pin1, pin2, type="", outputCVNumber=0):

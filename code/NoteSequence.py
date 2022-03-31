@@ -10,8 +10,10 @@ class NoteSequence:
         self.lcd = lcd
         self.note = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"]
         self.listSteps = []
+        # * single_note = {"pitch": 0, "octave": 1}
         for i in range(NB_STEPS): # creation of the list of steps
-            self.listSteps.append([1, 0]) #cette liste représente l'octave 0 et la note 1
+            self.listSteps.append([1, 0]) # list represent octave (1), and pitch (0: C)
+            # * self.listSteps.append(single_note) # * would rather use this so we can then get noteSequence.listSteps[nbStep][pitch]
         print("steps list created:\n"+str(self.listSteps))
 
     def increaseStep(self):

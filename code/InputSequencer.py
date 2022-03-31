@@ -1,7 +1,7 @@
 # Inputs (jacks) class
 # ? import pcf8574_io
 
-# ! NOT NECESSARY
+# TODO
 
 '''
 class InputSequencer(): # on a PCF8574 port expander
