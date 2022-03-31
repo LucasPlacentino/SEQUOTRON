@@ -1,5 +1,7 @@
 ---
+title: SEQUOTRON
 layout: default
+filename: index
 ---
 
 SEQUOTRON is a Digital Step Sequencer (and Control Voltage generator) for (semi-)Modular Synthetizers, based on a Raspberry Pi.  
