@@ -8,7 +8,8 @@ class Tempo:
         self.value = initalTempo
         self.lcd = lcd
         self.step = 0
-        self.on = ""
+
+        self.on = "" # remove if using self.active
         # test :
         self.active = False
 

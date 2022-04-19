@@ -93,5 +93,5 @@ BA2 year project - INFO section - **Modular Synth Sequencer**
 ------------------------------------------------
 
 # License
-- Hardware: Licensed under CERN-OHL-P v2
-- Software: Licensed under Apache License Version 2.0
+- Hardware: Licensed under [CERN-OHL-P v2](https://github.com/LucasPlacentino/SEQUOTRON/blob/main/hardware/LICENSE)
+- Software: Licensed under [Apache License Version 2.0](https://github.com/LucasPlacentino/SEQUOTRON/blob/main/code/LICENSE)

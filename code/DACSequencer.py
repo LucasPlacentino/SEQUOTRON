@@ -12,3 +12,8 @@ class DACSequencer():
         self.ce = pinCE
         self.number = number
 
+    def setVoltage(self, channel, value):
+        self.output.open()
+        self.output.setVoltage(channel, value)
+        self.output.close()
+

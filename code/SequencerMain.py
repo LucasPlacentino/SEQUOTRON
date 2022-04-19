@@ -29,18 +29,21 @@ from Gate import Gate #* critical
 from ClockSequencer import ClockSequencer # ? need some testing
 
 import threading
+import logging
 
-from Env import PITCH_CHANNEL, GATE_CHANNEL, MAX_DAC, NB_NOTES, NB_STEPS, STARTUP_SEQUENCE
+from Env import PITCH_CHANNEL, GATE_CHANNEL, MAX_DAC, NB_NOTES, NB_STEPS, STARTUP_SEQUENCE, MOCK_PINS
 #* check if all imports from Env.py are necessary/present
 
 
 def main(): # Main function, activated when sequencer launched/file run
 
     # ! here below is for setting the pins from gpiozero as fake pins for testing purposes
-    # ! comment when testing has ended
-    #gpiozero.Device.pin_factory = gpiozero.pins.mock.MockFactory()
-    #Device.pin_factory = MockFactory()
-    #print("------!-------MOCK PINS------!-------")
+    if MOCK_PINS:
+        gpiozero.Device.pin_factory = gpiozero.pins.mock.MockFactory()
+        Device.pin_factory = MockFactory()
+        print("------!-------MOCK PINS------!-------")
+    else:
+        print("--- using real pins ---")
     # ! -------------------
 
     global sequencer
@@ -184,13 +187,14 @@ def startupSequence():
     global tempo
     global gate
     notes = STARTUP_SEQUENCE
+
     print("Startup sequence")
-    i = 0
-    for p in notes:
+
+    for current_note in notes:
         sequencer.dac1.output.open()
-        sequencer.dac1.output.setVoltage(PITCH_CHANNEL, int(MAX_DAC*((12*int(notes[i][0]) + int(notes[i][1]))/NB_NOTES))) # ! CORRECT DAC ?
+        sequencer.dac1.output.setVoltage(PITCH_CHANNEL, int(MAX_DAC*((12*int(current_note[0]) + int(current_note[1]))/NB_NOTES)))  # ! CORRECT DAC ?
         sequencer.dac1.output.close()
-        print("note to dac1 channel0:", notes[i][1], notes[i][0])        
+        print("note to dac1 channel0:", current_note[1], current_note[0])        
         
         # start gate
         sequencer.dac2.output.open()
@@ -204,11 +208,11 @@ def startupSequence():
         sequencer.dac2.output.setVoltage(GATE_CHANNEL, 0) # ! CORRECT DAC ?
         sequencer.dac2.output.close()
         time.sleep((60/tempo.value)*(1-gate.value)) # ?
-        
-        i += 1
+    
     sequencer.dac1.output.open()
     sequencer.dac1.output.setVoltage(PITCH_CHANNEL, 0)
     sequencer.dac1.output.close()
+
     print("startup sequence ended")
 
 
@@ -238,13 +242,18 @@ if __name__ == "__main__":
     #main() #uncomment to see other errors
     try:
         main()
-    except (KeyboardInterrupt, SystemExit) as error:  # catches a keyboard interrupt or a raised system exit (raise KeyboardInterrupt OR raise SystemExit("_Ending program_") OR sys.exit("_Ending program_"))
-        print("\/\/\/\/\/\/\/\/\/\/\/\/\/\/\n"+error.__class__.__name__ +
+    except (KeyboardInterrupt, SystemExit) as exit:  # catches a keyboard interrupt or a raised system exit (raise KeyboardInterrupt OR raise SystemExit("_Ending program_") OR sys.exit("_Ending program_"))
+        print("\/\/\/\/\/\/\/\/\/\/\/\/\/\/\n"+exit.__class__.__name__ +
               ", stopping sequencer\n\/\/\/\/\/\/\/\/\/\/\/\/\/\/")
         #endSequencer() # stops the sequencer #* moved to finally:
+    except Exception as error: # catches all other errors
+        print("\n###### ERROR ######", error.__class__.__name__, "\n")
+        print(error)
+        print("\n######################\n")
+        logging.error('Unexpected error: {0}'.format(error))
     finally:
         print("========Ending Sequencer========")
         endSequencer() # stops the sequencer
-        sys.exit(0) # exits the interpreter ? ends the script (with code 0)
+        sys.exit(0) # ends the script (with code 0)
 
 

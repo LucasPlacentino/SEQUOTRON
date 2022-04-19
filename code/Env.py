@@ -4,6 +4,9 @@
 # Saved sequence file path
 SAVE_FILE = "/path/to/saved-sequence-file.txt"
 
+# Mock/Fake Pins
+MOCK_PINS = False
+
 # Simulated DAC
 SIMULATED_DAC = False
 

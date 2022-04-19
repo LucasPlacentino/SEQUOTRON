@@ -1,6 +1,8 @@
 '''
 #! USED TO SIMULATE THE DAC (for testing purposes)
 '''
+
+from Env import MAX_DAC, MAX_OCTAVE
 class Simulatedac():
 
     def __init__(self, spibus, spidevice, pinCE, number=None):
@@ -12,6 +14,13 @@ class Simulatedac():
         self.number = number
         self.output = MCP4922Simulated(spibus, spidevice, pinCE, number)
 
+    def setVoltage(self, channel, value):
+        print("dac", self.number, "channel", channel, "opened")
+        self.output.open()
+        self.output.setVoltage(channel, value)
+        print("dac", self.number, "channel", channel, "closed")
+        self.output.close()
+
 class MCP4922Simulated():
 
     def __init__(self, spibus, spidevice, pinCE, number):
@@ -21,8 +30,8 @@ class MCP4922Simulated():
         self.number = number
 
     def setVoltage(self, channel, value):
-        print("DAC", self.number,"ce:", self.ce, ", channel:", channel, ", value:", str(value)+"(/4095)")
-        voltage = 5*(value/4095)
+        print("DAC", self.number,"ce:", self.ce, ", channel:", channel, ", value:", str(value)+"(/"+MAX_DAC+")")
+        voltage = (MAX_OCTAVE+1)*(value/MAX_DAC)
         print("(Voltage equivalent:",str(round(voltage,3))+"V)")
 
     def shutdown(self, i):
