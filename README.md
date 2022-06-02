@@ -1,22 +1,22 @@
 # SEQUOTRON - Modular Synth Sequencer
 ## *WIP*
-### Table of contents
+### Table Of Contents
 
 <!--ts-->
    * [Description](#description)
    * [Usage](#usage)
-      * [](#)
+      * [](#-)
    * [Construction](#construction)
-      * [Design](#design)
-      * [BOM](#bom-bill-of-materials)
-      * [Steps](#steps)
+      * [Design](#design-)
+      * [BOM](#bom-bill-of-materials-)
+      * [Steps](#steps-)
    * [Code](#code)
-      * [](#)
+      * [](#-)
    * [Future upgrades](#future-upgrades)
    * [Notice](#notice)
    * [About](#about)
-      * [Authors and contributors](#authors-and-contributors)
-      * [Project context](#project-context)
+      * [Authors and contributors](#authors-and-contributors-)
+      * [Project context](#project-context-)
    * [License](#license)
 
 <!--te-->
@@ -93,5 +93,5 @@ BA2 year project - INFO section - **Modular Synth Sequencer**
 ------------------------------------------------
 
 # License
-- Hardware: Licensed under [CERN-OHL-P v2](https://github.com/LucasPlacentino/SEQUOTRON/blob/main/hardware/LICENSE)
-- Software: Licensed under [Apache License Version 2.0](https://github.com/LucasPlacentino/SEQUOTRON/blob/main/code/LICENSE)
+- Hardware: Licensed under [CERN-OHL-P v2](hardware/LICENSE)
+- Software: Licensed under [Apache License Version 2.0](code/LICENSE)
